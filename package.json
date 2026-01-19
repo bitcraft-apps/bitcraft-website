@@ -10,6 +10,10 @@
     "format": "prettier . --write",
     "format:check": "prettier . --check"
   },
+  "engines": {
+    "node": "^20.3.0 || >=22.0.0"
+  },
+  "packageManager": "npm@10.9.4",
   "dependencies": {
     "astro": "^5.16.11"
   },
