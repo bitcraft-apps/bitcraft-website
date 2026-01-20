@@ -1,0 +1,47 @@
+:root {
+  /* Brand primitives */
+  --bitcraft-color-dark-olive: #556B2F;
+  --bitcraft-color-olive-drab: #6B8E23;
+  --bitcraft-color-forest-green: #228B22;
+
+  --bitcraft-color-neutral-near-black: #1A1A1A;
+  --bitcraft-color-neutral-off-white: #F5F5F5;
+  --bitcraft-color-neutral-white: #FFFFFF;
+
+  --bitcraft-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --bitcraft-font-mono: 'JetBrains Mono', monospace;
+
+  --bitcraft-text-h1-size: 2.5rem;
+  --bitcraft-text-h1-weight: 600;
+  --bitcraft-text-h2-size: 2rem;
+  --bitcraft-text-h2-weight: 600;
+  --bitcraft-text-h3-size: 1.5rem;
+  --bitcraft-text-h3-weight: 600;
+  --bitcraft-text-body-size: 1rem;
+  --bitcraft-text-body-weight: 400;
+  --bitcraft-text-small-size: 0.875rem;
+  --bitcraft-text-small-weight: 400;
+
+  /* Semantic aliases */
+  --color-brand-primary: var(--bitcraft-color-dark-olive);
+  --color-brand-secondary: var(--bitcraft-color-olive-drab);
+  --color-brand-accent: var(--bitcraft-color-forest-green);
+
+  --color-text: var(--bitcraft-color-neutral-near-black);
+  --color-bg: var(--bitcraft-color-neutral-white);
+  --color-surface: var(--bitcraft-color-neutral-off-white);
+
+  --font-sans: var(--bitcraft-font-sans);
+  --font-mono: var(--bitcraft-font-mono);
+
+  --text-h1-size: var(--bitcraft-text-h1-size);
+  --text-h1-weight: var(--bitcraft-text-h1-weight);
+  --text-h2-size: var(--bitcraft-text-h2-size);
+  --text-h2-weight: var(--bitcraft-text-h2-weight);
+  --text-h3-size: var(--bitcraft-text-h3-size);
+  --text-h3-weight: var(--bitcraft-text-h3-weight);
+  --text-body-size: var(--bitcraft-text-body-size);
+  --text-body-weight: var(--bitcraft-text-body-weight);
+  --text-small-size: var(--bitcraft-text-small-size);
+  --text-small-weight: var(--bitcraft-text-small-weight);
+}
