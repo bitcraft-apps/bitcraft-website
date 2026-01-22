@@ -71,6 +71,12 @@ jobs:
           # Move contents of the 'bundle' directory to public/brand
           cp -R temp-unzip/bundle/* public/brand/
 
+          # Flatten 'brand' subdirectory if it exists (move contents up and remove dir)
+          if [ -d "public/brand/brand" ]; then
+            cp -R public/brand/brand/* public/brand/
+            rm -rf public/brand/brand
+          fi
+
           # Clean up temp directories
           rm -rf temp-download temp-unzip
 
