@@ -86,11 +86,19 @@ jobs:
           # - favicons, android-chrome, apple-touch-icon, site.webmanifest
           find . -maxdepth 1 -type f \( -name "favicon*" -o -name "android-chrome*" -o -name "apple-touch-icon.png" -o -name "site.webmanifest" \) -exec mv -f {} public/ \;
 
-          # 2. Move the 'brand' subdirectory contents to public/brand/
-          # The 'brand' folder itself contains the brand-specific assets
+          # 2. Move the 'brand' subdirectory contents
+          # We now split this:
+          # - tokens.css goes to src/styles/
+          # - other brand assets (images, etc.) go to public/brand/
           if [ -d "brand" ]; then
-             mkdir -p public/brand
-             # Copy contents of brand/ to public/brand/
+             mkdir -p public/brand src/styles
+             
+             # Move tokens.css if it exists
+             if [ -f "brand/tokens.css" ]; then
+                mv -f brand/tokens.css src/styles/
+             fi
+
+             # Copy remaining contents of brand/ to public/brand/
              cp -R brand/* public/brand/
              rm -rf brand
           fi
