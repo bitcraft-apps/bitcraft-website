@@ -5,19 +5,23 @@
 @import '@fontsource/inter/600.css';
 @import '@fontsource/jetbrains-mono';
 
+/* Brand tokens */
+@import './tokens.css';
+
 @import 'tailwindcss';
 
 @theme {
-  /* Colors */
-  --color-dark-olive: #556b2f;
-  --color-olive-drab: #6b8e23;
-  --color-forest-green: #228b22;
-  --color-near-black: #1a1a1a;
-  --color-off-white: #f5f5f5;
+  /* Colors - referencing CSS variables from tokens.css */
+  --color-dark-olive: var(--bitcraft-color-dark-olive);
+  --color-olive-drab: var(--bitcraft-color-olive-drab);
+  --color-forest-green: var(--bitcraft-color-forest-green);
+  --color-near-black: var(--bitcraft-color-neutral-near-black);
+  --color-off-white: var(--bitcraft-color-neutral-off-white);
+  --color-white: var(--bitcraft-color-neutral-white);
 
   /* Fonts */
-  --font-sans: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: var(--bitcraft-font-sans);
+  --font-mono: var(--bitcraft-font-mono);
 }
 
 /* Base styles */
