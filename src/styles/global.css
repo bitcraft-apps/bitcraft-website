@@ -1,0 +1,46 @@
+/* Global styles for Bitcraft Website */
+
+/* Fontsource imports */
+@import '@fontsource/inter';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/jetbrains-mono';
+
+@import 'tailwindcss';
+
+@theme {
+  /* Colors */
+  --color-dark-olive: #556b2f;
+  --color-olive-drab: #6b8e23;
+  --color-forest-green: #228b22;
+  --color-near-black: #1a1a1a;
+  --color-off-white: #f5f5f5;
+
+  /* Fonts */
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* Base styles */
+@layer base {
+  html {
+    @apply text-near-black bg-white;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-sans font-semibold;
+  }
+
+  body {
+    @apply font-sans font-normal;
+  }
+
+  code,
+  pre {
+    @apply font-mono;
+  }
+}
