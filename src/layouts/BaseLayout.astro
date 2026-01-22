@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
 import { SITE_DESCRIPTION } from "../consts";
 
 interface Props {
@@ -17,6 +18,9 @@ const { title, description = SITE_DESCRIPTION } = Astro.props;
     <BaseHead title={title} description={description} />
   </head>
   <body>
-    <slot />
+    <Header />
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <slot />
+    </main>
   </body>
 </html>

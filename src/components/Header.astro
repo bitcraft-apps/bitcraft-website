@@ -1,0 +1,202 @@
+---
+/**
+ * Header component with responsive navigation
+ * - Desktop: horizontal nav bar
+ * - Mobile: hamburger menu with slide-down navigation
+ */
+import Logo from "./Logo.astro";
+
+interface NavItem {
+  href: string;
+  label: string;
+}
+
+const navItems: NavItem[] = [
+  { href: "/", label: "Home" },
+  { href: "/projects", label: "Projects" },
+  { href: "/contact", label: "Contact" },
+];
+
+/**
+ * Check if a nav item is active based on current pathname
+ * - Home ("/") requires exact match
+ * - Other routes match if pathname starts with the href
+ */
+function isActive(href: string, pathname: string): boolean {
+  const normalizedPath = pathname.replace(/\/$/, "") || "/";
+  if (href === "/") {
+    return normalizedPath === "/";
+  }
+  return normalizedPath === href || normalizedPath.startsWith(`${href}/`);
+}
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 bg-white border-b border-olive-drab shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo -->
+      <a href="/" class="flex-shrink-0">
+        <Logo class="h-8 w-auto" />
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex space-x-8" aria-label="Main navigation">
+        <ul class="flex space-x-8">
+          {navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={[
+                  "text-near-black hover:text-dark-olive transition-colors duration-200",
+                  { "text-dark-olive font-semibold": isActive(item.href, currentPath) }
+                ]}
+                aria-current={isActive(item.href, currentPath) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Theme Toggle Slot -->
+      <div class="flex items-center">
+        <slot name="theme-toggle" />
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button
+        id="mobile-menu-button"
+        type="button"
+        class="md:hidden p-2 rounded-md text-near-black hover:text-dark-olive hover:bg-off-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-dark-olive"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open main menu"
+      >
+        <span class="sr-only">Open main menu</span>
+        <svg class="hamburger-icon h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg class="close-icon hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation Menu -->
+  <nav
+    id="mobile-menu"
+    class="hidden md:hidden bg-white border-t border-olive-drab"
+    aria-label="Mobile navigation"
+  >
+    <ul class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class:list={[
+              "mobile-nav-link block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200",
+              isActive(item.href, currentPath)
+                ? "text-dark-olive bg-off-white"
+                : "text-near-black hover:text-dark-olive hover:bg-off-white"
+            ]}
+            aria-current={isActive(item.href, currentPath) ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
+
+<script>
+  // Track if document-level listeners have been registered to prevent accumulation
+  let documentListenersRegistered = false;
+
+  function initMobileMenu() {
+    const button = document.getElementById("mobile-menu-button") as HTMLButtonElement | null;
+    const menu = document.getElementById("mobile-menu") as HTMLElement | null;
+
+    if (!button || !menu) return;
+
+    const hamburgerIcon = button.querySelector(".hamburger-icon") as HTMLElement | null;
+    const closeIcon = button.querySelector(".close-icon") as HTMLElement | null;
+    const mobileLinks = menu.querySelectorAll(".mobile-nav-link");
+
+    if (!hamburgerIcon || !closeIcon) return;
+
+    function openMenu() {
+      button!.setAttribute("aria-expanded", "true");
+      button!.setAttribute("aria-label", "Close main menu");
+      hamburgerIcon!.classList.add("hidden");
+      closeIcon!.classList.remove("hidden");
+      menu!.classList.remove("hidden");
+
+      // Focus first link for accessibility
+      const firstLink = menu!.querySelector("a");
+      firstLink?.focus();
+    }
+
+    function closeMenu() {
+      button!.setAttribute("aria-expanded", "false");
+      button!.setAttribute("aria-label", "Open main menu");
+      hamburgerIcon!.classList.remove("hidden");
+      closeIcon!.classList.add("hidden");
+      menu!.classList.add("hidden");
+    }
+
+    function toggleMenu() {
+      const isExpanded = button!.getAttribute("aria-expanded") === "true";
+      if (isExpanded) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    }
+
+    function handleEscapeKey(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        const btn = document.getElementById("mobile-menu-button");
+        if (btn?.getAttribute("aria-expanded") === "true") {
+          closeMenu();
+          btn.focus();
+        }
+      }
+    }
+
+    function handleClickOutside(event: MouseEvent) {
+      const btn = document.getElementById("mobile-menu-button");
+      const target = event.target as Node;
+      const header = btn?.closest("header");
+      if (header && !header.contains(target) && btn?.getAttribute("aria-expanded") === "true") {
+        closeMenu();
+      }
+    }
+
+    // Toggle on button click
+    button.addEventListener("click", toggleMenu);
+
+    // Close menu when clicking a link (for SPA-like behavior)
+    mobileLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        closeMenu();
+      });
+    });
+
+    // Register document-level listeners only once to prevent accumulation
+    // on repeated View Transitions navigations
+    if (!documentListenersRegistered) {
+      document.addEventListener("keydown", handleEscapeKey);
+      document.addEventListener("click", handleClickOutside);
+      documentListenersRegistered = true;
+    }
+  }
+
+  // Initialize on page load and re-initialize on Astro View Transitions
+  // Note: astro:page-load fires on initial page load as well as navigations
+  document.addEventListener("astro:page-load", initMobileMenu);
+</script>
