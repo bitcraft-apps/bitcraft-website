@@ -32,7 +32,11 @@ jobs:
           echo "Latest remote version: $REMOTE_VERSION"
 
           # 3. Compare
-          if [ "$LOCAL_VERSION" == "$REMOTE_VERSION" ]; then
+          # Normalize versions by removing leading 'v' if present
+          LOCAL_CLEAN=${LOCAL_VERSION#v}
+          REMOTE_CLEAN=${REMOTE_VERSION#v}
+
+          if [ "$LOCAL_CLEAN" == "$REMOTE_CLEAN" ]; then
             echo "Versions match. No update needed."
             echo "update_needed=false" >> $GITHUB_OUTPUT
           else
