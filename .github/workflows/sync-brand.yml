@@ -68,19 +68,29 @@ jobs:
           # Unzip to a temporary directory first
           unzip -o "$ZIP_FILE" -d temp-unzip
 
+          # The bundle structure is:
+          # bundle/
+          #   favicon-16x16.png
+          #   favicon-32x32.png
+          #   ... (standard files)
+          #   brand/
+          #     bitcraft-og.png
+          #     tokens.css
+          #     ... (brand files)
+
           # Move contents of the 'bundle' directory to temporary holding
           cp -R temp-unzip/bundle/* .
 
-          # Move standard web assets to public/ (overwrite if exists)
-          mv -f site.webmanifest favicon* android-chrome* apple-touch-icon.png public/
+          # 1. Move standard web assets to public/ root
+          # We use a glob that matches the standard files we expect
+          # - favicons, android-chrome, apple-touch-icon, site.webmanifest
+          find . -maxdepth 1 -type f \( -name "favicon*" -o -name "android-chrome*" -o -name "apple-touch-icon.png" -o -name "site.webmanifest" \) -exec mv -f {} public/ \;
 
-          # Move brand specific assets (tokens, OG image) to public/brand/
-          # The zip structure has them in 'brand' subfolder inside bundle
-          # If they were at root of bundle, move them explicitly
-
-          # Check if 'brand' directory exists from unzip (it was bundle/brand)
+          # 2. Move the 'brand' subdirectory contents to public/brand/
+          # The 'brand' folder itself contains the brand-specific assets
           if [ -d "brand" ]; then
              mkdir -p public/brand
+             # Copy contents of brand/ to public/brand/
              cp -R brand/* public/brand/
              rm -rf brand
           fi
