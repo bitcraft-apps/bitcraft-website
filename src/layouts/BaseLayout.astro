@@ -1,16 +1,14 @@
 ---
 import "../styles/global.css";
 import BaseHead from "../components/BaseHead.astro";
+import { SITE_DESCRIPTION } from "../consts";
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const {
-  title,
-  description = "Bitcraft Apps — web experiences and tools for Bitcraft and beyond.",
-} = Astro.props;
+const { title, description = SITE_DESCRIPTION } = Astro.props;
 ---
 
 <!doctype html>
