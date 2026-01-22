@@ -32,7 +32,13 @@ jobs:
           echo "Latest remote version: $REMOTE_VERSION"
 
           # 3. Compare
-          if [ "$LOCAL_VERSION" == "$REMOTE_VERSION" ]; then
+          # Normalize versions by removing leading 'v' if present
+          LOCAL_CLEAN=${LOCAL_VERSION#v}
+          REMOTE_CLEAN=${REMOTE_VERSION#v}
+
+          echo "local_version=$LOCAL_VERSION" >> $GITHUB_OUTPUT
+
+          if [ "$LOCAL_CLEAN" == "$REMOTE_CLEAN" ]; then
             echo "Versions match. No update needed."
             echo "update_needed=false" >> $GITHUB_OUTPUT
           else
@@ -52,7 +58,7 @@ jobs:
           # Download the specific asset 'brand-bundle.zip' from the release
           gh release download "$VERSION" \
             --repo bitcraft-apps/bitcraft-brand \
-            --pattern "brand-bundle.zip" \
+            --pattern "*brand-bundle*.zip" \
             --dir temp-download
 
           # Prepare destination
@@ -60,7 +66,9 @@ jobs:
           mkdir -p public/brand
 
           # Unzip (assuming flat structure or handling internal folders)
-          unzip -o temp-download/brand-bundle.zip -d public/brand/
+          # Use find to locate the zip file regardless of the version suffix
+          ZIP_FILE=$(find temp-download -name "*brand-bundle*.zip" | head -n 1)
+          unzip -o "$ZIP_FILE" -d public/brand/
 
           # Clean up zip
           rm -rf temp-download
