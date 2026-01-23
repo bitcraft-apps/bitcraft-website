@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={`${project.data.title} | Bitcraft`} description={project.data.description}>
+  <article class="max-w-3xl">
+    <header class="mb-8">
+      <a href="/projects" class="text-olive-drab hover:text-dark-olive mb-4 inline-block">
+        &larr; Back to Projects
+      </a>
+      <h1 class="text-4xl font-bold text-dark-olive mb-4">{project.data.title}</h1>
+      <p class="text-lg text-near-black mb-4">{project.data.description}</p>
+      <div class="flex items-center gap-4 text-sm text-olive-drab">
+        <time datetime={project.data.pubDate.toISOString()}>
+          {project.data.pubDate.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </time>
+        {project.data.repository && (
+          <a
+            href={project.data.repository}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-dark-olive underline"
+          >
+            Repository
+          </a>
+        )}
+      </div>
+    </header>
+    <div class="prose prose-olive max-w-none">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
