@@ -118,6 +118,8 @@ const currentPath = Astro.url.pathname;
   let documentListenersRegistered = false;
   // Track the current button to prevent duplicate click listeners on same element
   let initializedButton: HTMLButtonElement | null = null;
+  // Track initialized mobile links to prevent duplicate click listeners
+  let initializedLinks: WeakSet<Element> = new WeakSet();
 
   function initMobileMenu() {
     const button = document.getElementById("mobile-menu-button") as HTMLButtonElement | null;
@@ -188,10 +190,14 @@ const currentPath = Astro.url.pathname;
     button.addEventListener("click", toggleMenu);
 
     // Close menu when clicking a link (for SPA-like behavior)
+    // Only add listeners to links that haven't been initialized yet
     mobileLinks.forEach((link) => {
-      link.addEventListener("click", () => {
-        closeMenu();
-      });
+      if (!initializedLinks.has(link)) {
+        initializedLinks.add(link);
+        link.addEventListener("click", () => {
+          closeMenu();
+        });
+      }
     });
 
     // Register document-level listeners only once to prevent accumulation
