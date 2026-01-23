@@ -5,17 +5,7 @@
  * - Mobile: hamburger menu with slide-down navigation
  */
 import Logo from "./Logo.astro";
-
-interface NavItem {
-  href: string;
-  label: string;
-}
-
-const navItems: NavItem[] = [
-  { href: "/", label: "Home" },
-  { href: "/projects", label: "Projects" },
-  { href: "/contact", label: "Contact" },
-];
+import { NAV_ITEMS } from "../consts";
 
 /**
  * Check if a nav item is active based on current pathname
@@ -44,7 +34,7 @@ const currentPath = Astro.url.pathname;
       <!-- Desktop Navigation -->
       <nav class="hidden md:flex space-x-8" aria-label="Main navigation">
         <ul class="flex space-x-8">
-          {navItems.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <li>
               <a
                 href={item.href}
@@ -93,7 +83,7 @@ const currentPath = Astro.url.pathname;
     aria-label="Mobile navigation"
   >
     <ul class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-      {navItems.map((item) => (
+      {NAV_ITEMS.map((item) => (
         <li>
           <a
             href={item.href}

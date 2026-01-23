@@ -3,3 +3,14 @@
 
 export const SITE_DESCRIPTION =
   'Bitcraft — web experiences and tools for Bitcraft and beyond.';
+
+export interface NavItem {
+  href: string;
+  label: string;
+}
+
+export const NAV_ITEMS: NavItem[] = [
+  { href: '/', label: 'Home' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/contact', label: 'Contact' },
+];

@@ -5,17 +5,22 @@
  * - Responsive layout: stacked on mobile, 3-column grid on desktop
  */
 import Logo from "./Logo.astro";
+import { NAV_ITEMS } from "../consts";
 
-interface NavItem {
-  href: string;
-  label: string;
+/**
+ * Check if a nav item is active based on current pathname
+ * - Home ("/") requires exact match
+ * - Other routes match if pathname starts with the href
+ */
+function isActive(href: string, pathname: string): boolean {
+  const normalizedPath = pathname.replace(/\/$/, "") || "/";
+  if (href === "/") {
+    return normalizedPath === "/";
+  }
+  return normalizedPath === href || normalizedPath.startsWith(`${href}/`);
 }
 
-const navItems: NavItem[] = [
-  { href: "/", label: "Home" },
-  { href: "/projects", label: "Projects" },
-  { href: "/contact", label: "Contact" },
-];
+const currentPath = Astro.url.pathname;
 
 interface SocialLink {
   href: string;
@@ -54,11 +59,17 @@ const currentYear = new Date().getFullYear();
         </h3>
         <nav aria-label="Footer navigation">
           <ul class="space-y-2">
-            {navItems.map((item) => (
+            {NAV_ITEMS.map((item) => (
               <li>
                 <a
                   href={item.href}
-                  class="text-off-white/70 hover:text-white transition-colors duration-200"
+                  class:list={[
+                    "transition-colors duration-200",
+                    isActive(item.href, currentPath)
+                      ? "text-white font-semibold"
+                      : "text-off-white/70 hover:text-white"
+                  ]}
+                  aria-current={isActive(item.href, currentPath) ? "page" : undefined}
                 >
                   {item.label}
                 </a>
