@@ -3,6 +3,11 @@ title: Sample Project
 description: A placeholder project to demonstrate the content collection setup.
 pubDate: 2025-01-23
 repository: https://github.com/example/sample-project
+image: /images/projects/sample-project.jpg
+tags:
+  - Astro
+  - TypeScript
+  - Demo
 ---
 
 This is a sample project entry. Replace this with your actual project content.

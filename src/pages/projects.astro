@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
 import { getCollection } from "astro:content";
 
 const projects = await getCollection("projects");
@@ -22,36 +23,8 @@ const sortedProjects = [...projects].sort(
     ) : (
       <ul class="space-y-6">
         {sortedProjects.map((project) => (
-          <li class="p-4 bg-off-white rounded-lg border border-olive-drab">
-            <a
-              href={`/projects/${project.id}`}
-              class="block hover:opacity-80 transition-opacity"
-            >
-              <h2 class="text-2xl font-bold text-dark-olive mb-2">
-                {project.data.title}
-              </h2>
-              <p class="text-near-black mb-2">{project.data.description}</p>
-              <time
-                datetime={project.data.pubDate.toISOString()}
-                class="text-sm text-olive-drab"
-              >
-                {project.data.pubDate.toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </time>
-            </a>
-            {project.data.repository && (
-              <a
-                href={project.data.repository}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-block mt-2 text-sm text-olive-drab hover:text-dark-olive underline"
-              >
-                View Repository
-              </a>
-            )}
+          <li>
+            <ProjectCard project={project} />
           </li>
         ))}
       </ul>
