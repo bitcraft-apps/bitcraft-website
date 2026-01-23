@@ -3,12 +3,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
 const projects = await getCollection("projects");
-const sortedProjects = projects.sort(
+const sortedProjects = [...projects].sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 ---
 
-<BaseLayout title="Projects | Bitcraft">
+<BaseLayout title="Projects | Bitcraft" description="Our portfolio of web experiences and tools.">
   <h1 class="text-4xl font-bold text-dark-olive mb-4">Projects</h1>
   <p class="text-lg text-near-black font-sans mb-8">
     Our portfolio of web experiences and tools.
