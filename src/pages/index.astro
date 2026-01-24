@@ -1,13 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
 import FeaturedProjects from "../components/FeaturedProjects.astro";
 ---
 
 <BaseLayout title="Bitcraft">
-  <h1 class="text-4xl font-bold text-dark-olive mb-4">Bitcraft</h1>
-  <p class="text-lg text-near-black font-sans mb-4">
-    Web experiences and tools for <span class="text-forest-green font-bold">Bitcraft</span> and beyond.
-  </p>
-
+  <Hero slot="fullWidth" />
   <FeaturedProjects />
 </BaseLayout>
