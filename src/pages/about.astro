@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import AboutHero from "../components/AboutHero.astro";
+import CompanyStory from "../components/CompanyStory.astro";
+import CompanyValues from "../components/CompanyValues.astro";
+---
+
+<BaseLayout title="About | Bitcraft" description="Learn about Bitcraft — a software studio helping startups and businesses bring ideas to life through thoughtful engineering.">
+  <AboutHero slot="fullWidth" />
+  <CompanyStory slot="fullWidth" />
+  <CompanyValues slot="fullWidth" />
+</BaseLayout>
