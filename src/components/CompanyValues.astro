@@ -26,11 +26,11 @@ const values = [
 ];
 ---
 
-<section aria-labelledby="values-heading" class="py-16 sm:py-20 bg-off-white">
+<section aria-labelledby="values-heading" class="py-16 sm:py-20 bg-off-white dark:bg-near-black">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <h2
       id="values-heading"
-      class="text-3xl sm:text-4xl font-semibold text-dark-olive mb-12 text-center"
+      class="text-3xl sm:text-4xl font-semibold text-dark-olive dark:text-off-white mb-12 text-center"
     >
       What We Believe
     </h2>
@@ -38,12 +38,12 @@ const values = [
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       {
         values.map(({ title, description, iconId }) => (
-          <article class="bg-white rounded-lg p-8 border border-olive-drab/20">
+          <article class="bg-white dark:bg-near-black rounded-lg p-8 border border-olive-drab/20 dark:border-olive-drab/30">
             <div class="w-12 h-12 text-forest-green mb-5">
               <Icon name={iconId} size="lg" />
             </div>
-            <h3 class="text-xl font-semibold text-dark-olive mb-3">{title}</h3>
-            <p class="text-near-black leading-relaxed">{description}</p>
+            <h3 class="text-xl font-semibold text-dark-olive dark:text-off-white mb-3">{title}</h3>
+            <p class="text-near-black dark:text-off-white/80 leading-relaxed">{description}</p>
           </article>
         ))
       }

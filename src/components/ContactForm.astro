@@ -37,7 +37,7 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
 >
   <!-- Name Field -->
   <div>
-    <label for={`${uniqueId}-name`} class="block text-sm font-semibold text-near-black mb-2">
+    <label for={`${uniqueId}-name`} class="block text-sm font-semibold text-near-black dark:text-off-white mb-2">
       Name <span class="text-forest-green" aria-hidden="true">*</span>
       <span class="sr-only">(required)</span>
     </label>
@@ -48,7 +48,7 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
       required
       autocomplete="name"
       placeholder="Your name"
-      class="w-full px-4 py-3 border border-olive-drab/30 rounded-lg bg-white text-near-black placeholder-near-black/50 focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-transparent transition-shadow duration-200"
+      class="w-full px-4 py-3 border border-olive-drab/30 dark:border-olive-drab/40 rounded-lg bg-white dark:bg-near-black text-near-black dark:text-off-white placeholder-near-black/50 dark:placeholder-off-white/50 focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-transparent transition-shadow duration-200"
       data-field="name"
     />
     <p
@@ -62,7 +62,7 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
 
   <!-- Email Field -->
   <div>
-    <label for={`${uniqueId}-email`} class="block text-sm font-semibold text-near-black mb-2">
+    <label for={`${uniqueId}-email`} class="block text-sm font-semibold text-near-black dark:text-off-white mb-2">
       Email <span class="text-forest-green" aria-hidden="true">*</span>
       <span class="sr-only">(required)</span>
     </label>
@@ -73,7 +73,7 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
       required
       autocomplete="email"
       placeholder="your@email.com"
-      class="w-full px-4 py-3 border border-olive-drab/30 rounded-lg bg-white text-near-black placeholder-near-black/50 focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-transparent transition-shadow duration-200"
+      class="w-full px-4 py-3 border border-olive-drab/30 dark:border-olive-drab/40 rounded-lg bg-white dark:bg-near-black text-near-black dark:text-off-white placeholder-near-black/50 dark:placeholder-off-white/50 focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-transparent transition-shadow duration-200"
       data-field="email"
     />
     <p
@@ -87,7 +87,7 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
 
   <!-- Message Field -->
   <div>
-    <label for={`${uniqueId}-message`} class="block text-sm font-semibold text-near-black mb-2">
+    <label for={`${uniqueId}-message`} class="block text-sm font-semibold text-near-black dark:text-off-white mb-2">
       Message <span class="text-forest-green" aria-hidden="true">*</span>
       <span class="sr-only">(required)</span>
     </label>
@@ -97,7 +97,7 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
       required
       rows="5"
       placeholder="How can I help you?"
-      class="w-full px-4 py-3 border border-olive-drab/30 rounded-lg bg-white text-near-black placeholder-near-black/50 focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-transparent transition-shadow duration-200 resize-y"
+      class="w-full px-4 py-3 border border-olive-drab/30 dark:border-olive-drab/40 rounded-lg bg-white dark:bg-near-black text-near-black dark:text-off-white placeholder-near-black/50 dark:placeholder-off-white/50 focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-transparent transition-shadow duration-200 resize-y"
       data-field="message"></textarea>
     <p
       id={`${uniqueId}-message-error`}
@@ -180,7 +180,7 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
   <!-- Error Message -->
   <div
     data-error-message
-    class="hidden p-4 bg-red-50 border border-red-500 rounded-lg"
+    class="hidden p-4 bg-red-50 dark:bg-red-900/20 border border-red-500 rounded-lg"
     role="alert"
     aria-live="polite"
     aria-hidden="true"

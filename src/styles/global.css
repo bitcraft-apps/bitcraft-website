@@ -13,6 +13,9 @@
 
 @import 'tailwindcss';
 
+/* Enable dark mode with class strategy */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Colors - referencing CSS variables from tokens.css */
   --color-dark-olive: var(--bitcraft-color-dark-olive);
@@ -30,7 +33,7 @@
 /* Base styles */
 @layer base {
   html {
-    @apply text-near-black bg-white;
+    @apply text-near-black bg-white dark:text-off-white dark:bg-near-black;
   }
 
   h1,

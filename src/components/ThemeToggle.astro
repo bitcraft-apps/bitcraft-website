@@ -1,0 +1,68 @@
+---
+/**
+ * ThemeToggle component - toggles between light and dark mode
+ * - Persists preference in localStorage
+ * - Respects system preference on first visit
+ * - Shows sun icon in dark mode (to switch to light), moon icon in light mode (to switch to dark)
+ */
+import Icon from './Icon.astro';
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  class="p-2 rounded-md text-near-black dark:text-off-white hover:text-dark-olive dark:hover:text-white hover:bg-off-white dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-dark-olive dark:focus:ring-off-white transition-colors duration-200"
+  aria-label="Toggle dark mode"
+>
+  <span class="sr-only">Toggle dark mode</span>
+  <!-- Sun icon - shown in dark mode (click to switch to light) -->
+  <span class="hidden dark:block">
+    <Icon name="sun" size="sm" />
+  </span>
+  <!-- Moon icon - shown in light mode (click to switch to dark) -->
+  <span class="block dark:hidden">
+    <Icon name="moon" size="sm" />
+  </span>
+</button>
+
+<script>
+  function initThemeToggle() {
+    const button = document.getElementById('theme-toggle');
+    if (!button || button.dataset.initialized === 'true') return;
+    button.dataset.initialized = 'true';
+
+    function getTheme(): 'light' | 'dark' {
+      const stored = localStorage.getItem('theme');
+      if (stored === 'dark' || stored === 'light') return stored;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function setTheme(theme: 'light' | 'dark') {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      localStorage.setItem('theme', theme);
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      setTheme(next);
+    }
+
+    button.addEventListener('click', toggleTheme);
+
+    // Listen for system preference changes (only if user hasn't set a preference)
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQuery.addEventListener('change', (e) => {
+      // Only update if user hasn't explicitly set a preference
+      if (!localStorage.getItem('theme')) {
+        setTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+  }
+
+  // Initialize immediately for standard page loads
+  initThemeToggle();
+
+  // Re-initialize on View Transitions navigation
+  document.addEventListener('astro:page-load', initThemeToggle);
+</script>

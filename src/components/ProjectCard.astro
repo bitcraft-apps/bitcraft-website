@@ -27,7 +27,7 @@ const displayTags = getDisplayTags(tags);
 ---
 
 <article
-  class="group relative bg-white rounded-xl border border-olive-drab/10 overflow-hidden shadow-sm hover:shadow-lg hover:shadow-forest-green/10 hover:border-forest-green/20 transform hover:-translate-y-1 transition-all duration-300"
+  class="group relative bg-white dark:bg-near-black rounded-xl border border-olive-drab/10 dark:border-olive-drab/20 overflow-hidden shadow-sm hover:shadow-lg hover:shadow-forest-green/10 hover:border-forest-green/20 dark:hover:border-forest-green/40 transform hover:-translate-y-1 transition-all duration-300"
 >
   {
     image ? (
@@ -75,11 +75,11 @@ const displayTags = getDisplayTags(tags);
 
     <a href={`/projects/${project.id}`} class="block">
       <h2
-        class="text-xl font-bold text-dark-olive mb-2 group-hover:text-forest-green transition-colors duration-300"
+        class="text-xl font-bold text-dark-olive dark:text-off-white mb-2 group-hover:text-forest-green transition-colors duration-300"
       >
         {title}
       </h2>
-      <p class="text-near-black/70 mb-4 line-clamp-2 leading-relaxed">{description}</p>
+      <p class="text-near-black/70 dark:text-off-white/70 mb-4 line-clamp-2 leading-relaxed">{description}</p>
     </a>
 
     <div class="flex items-center justify-between">
@@ -104,9 +104,9 @@ const displayTags = getDisplayTags(tags);
 
     {
       displayTags.length > 0 && (
-        <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-olive-drab/10">
+        <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-olive-drab/10 dark:border-olive-drab/20">
           {displayTags.map((tag) => (
-            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-off-white text-dark-olive/80 border border-olive-drab/10">
+            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-off-white dark:bg-white/10 text-dark-olive/80 dark:text-off-white/80 border border-olive-drab/10 dark:border-olive-drab/20">
               {tag}
             </span>
           ))}

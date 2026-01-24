@@ -21,11 +21,11 @@ const displayTags = getDisplayTags(project.data.tags);
 <BaseLayout title={`${project.data.title} | Bitcraft`} description={project.data.description}>
   <article class="max-w-3xl">
     <header class="mb-8">
-      <a href="/projects" class="text-olive-drab hover:text-dark-olive mb-4 inline-block">
+      <a href="/projects" class="text-olive-drab hover:text-dark-olive dark:hover:text-white mb-4 inline-block">
         &larr; Back to Projects
       </a>
-      <h1 class="text-4xl font-bold text-dark-olive mb-4">{project.data.title}</h1>
-      <p class="text-lg text-near-black mb-4">{project.data.description}</p>
+      <h1 class="text-4xl font-bold text-dark-olive dark:text-off-white mb-4">{project.data.title}</h1>
+      <p class="text-lg text-near-black dark:text-off-white/80 mb-4">{project.data.description}</p>
       <div class="flex items-center gap-4 text-sm text-olive-drab">
         {
           project.data.status === 'in-progress' && (
@@ -50,7 +50,7 @@ const displayTags = getDisplayTags(project.data.tags);
               href={project.data.repository}
               target="_blank"
               rel="noopener noreferrer"
-              class="hover:text-dark-olive underline"
+              class="hover:text-dark-olive dark:hover:text-white underline"
             >
               Repository
             </a>
@@ -61,7 +61,7 @@ const displayTags = getDisplayTags(project.data.tags);
         displayTags.length > 0 && (
           <div class="flex flex-wrap gap-2 mt-4">
             {displayTags.map((tag) => (
-              <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-off-white text-dark-olive/80 border border-olive-drab/10">
+              <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-off-white dark:bg-white/10 text-dark-olive/80 dark:text-off-white/80 border border-olive-drab/10 dark:border-olive-drab/20">
                 {tag}
               </span>
             ))}
@@ -69,7 +69,7 @@ const displayTags = getDisplayTags(project.data.tags);
         )
       }
     </header>
-    <div class="prose prose-olive max-w-none">
+    <div class="prose prose-olive dark:prose-invert max-w-none">
       <Content />
     </div>
   </article>

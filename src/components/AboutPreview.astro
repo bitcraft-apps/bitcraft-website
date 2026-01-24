@@ -17,15 +17,15 @@ import Icon from './Icon.astro';
         About Us
       </div>
 
-      <h2 id="about-preview-heading" class="text-3xl sm:text-4xl font-bold text-dark-olive mb-6">
+      <h2 id="about-preview-heading" class="text-3xl sm:text-4xl font-bold text-dark-olive dark:text-off-white mb-6">
         We build digital products that last.
       </h2>
 
-      <div class="space-y-4 text-near-black/80 leading-relaxed text-lg">
+      <div class="space-y-4 text-near-black/80 dark:text-off-white/80 leading-relaxed text-lg">
         <p>
           Bitcraft is a software studio helping startups and businesses bring ideas to life through
           thoughtful engineering. We believe software should be <span
-            class="text-dark-olive font-medium">crafted</span
+            class="text-dark-olive dark:text-forest-green font-medium">crafted</span
           >, not just coded.
         </p>
         <p>
@@ -36,7 +36,7 @@ import Icon from './Icon.astro';
 
       <a
         href="/about"
-        class="group inline-flex items-center gap-2 mt-8 text-forest-green hover:text-dark-olive font-semibold transition-colors"
+        class="group inline-flex items-center gap-2 mt-8 text-forest-green hover:text-dark-olive dark:hover:text-white font-semibold transition-colors"
       >
         Learn more about us
         <Icon name="arrow-right" size="sm" class="group-hover:translate-x-1 transition-transform" />
@@ -46,7 +46,7 @@ import Icon from './Icon.astro';
     <!-- Founder Card -->
     <div class="relative">
       <div
-        class="bg-white rounded-2xl p-8 shadow-lg shadow-olive-drab/5 border border-olive-drab/10"
+        class="bg-white dark:bg-near-black rounded-2xl p-8 shadow-lg shadow-olive-drab/5 dark:shadow-none border border-olive-drab/10 dark:border-olive-drab/20"
       >
         <!-- Decorative quote mark -->
         <div
@@ -59,20 +59,20 @@ import Icon from './Icon.astro';
           <!-- Founder Photo Placeholder -->
           <div class="flex-shrink-0">
             <div
-              class="w-20 h-20 rounded-full bg-gradient-to-br from-forest-green/20 to-olive-drab/20 flex items-center justify-center border-2 border-white shadow-lg"
+              class="w-20 h-20 rounded-full bg-gradient-to-br from-forest-green/20 to-olive-drab/20 flex items-center justify-center border-2 border-white dark:border-near-black shadow-lg"
             >
-              <span class="text-2xl font-bold text-dark-olive">{FOUNDER.initials}</span>
+              <span class="text-2xl font-bold text-dark-olive dark:text-off-white">{FOUNDER.initials}</span>
             </div>
           </div>
 
           <!-- Founder Info -->
           <figure class="flex-1">
-            <blockquote class="text-near-black/80 leading-relaxed mb-4">
+            <blockquote class="text-near-black/80 dark:text-off-white/80 leading-relaxed mb-4">
               "{FOUNDER.quote}"
             </blockquote>
 
             <figcaption>
-              <strong class="font-semibold text-dark-olive">{FOUNDER.name}</strong>
+              <strong class="font-semibold text-dark-olive dark:text-off-white">{FOUNDER.name}</strong>
               <div class="text-olive-drab text-sm">{FOUNDER.role}</div>
             </figcaption>
           </figure>
@@ -91,12 +91,12 @@ import Icon from './Icon.astro';
 
       <!-- Floating accent elements -->
       <div
-        class="absolute -bottom-4 -right-4 w-24 h-24 bg-olive-drab/5 rounded-xl -z-10"
+        class="absolute -bottom-4 -right-4 w-24 h-24 bg-olive-drab/5 dark:bg-olive-drab/10 rounded-xl -z-10"
         aria-hidden="true"
       >
       </div>
       <div
-        class="absolute -top-2 -right-2 w-16 h-16 bg-forest-green/5 rounded-lg -z-10"
+        class="absolute -top-2 -right-2 w-16 h-16 bg-forest-green/5 dark:bg-forest-green/10 rounded-lg -z-10"
         aria-hidden="true"
       >
       </div>

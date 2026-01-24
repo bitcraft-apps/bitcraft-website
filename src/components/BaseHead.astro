@@ -50,6 +50,17 @@ const jsonLd = {
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width" />
+
+<!-- Theme initialization - must run before page renders to prevent flash -->
+<script is:inline>
+(function() {
+  const stored = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = stored || (prefersDark ? 'dark' : 'light');
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+})();
+</script>
+
 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />

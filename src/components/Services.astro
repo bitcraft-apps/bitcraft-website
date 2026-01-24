@@ -35,10 +35,10 @@ const services: Service[] = [
 
 <section aria-labelledby="services-heading" class="py-16 sm:py-20">
   <div class="text-center mb-12">
-    <h2 id="services-heading" class="text-3xl sm:text-4xl font-bold text-dark-olive mb-4">
+    <h2 id="services-heading" class="text-3xl sm:text-4xl font-bold text-dark-olive dark:text-off-white mb-4">
       What We Do
     </h2>
-    <p class="text-near-black/70 max-w-2xl mx-auto text-lg">
+    <p class="text-near-black/70 dark:text-off-white/70 max-w-2xl mx-auto text-lg">
       We partner with startups and businesses to build software that makes a difference.
     </p>
   </div>
@@ -47,7 +47,7 @@ const services: Service[] = [
     {
       services.map(({ title, description, iconId }) => (
         <article
-          class="group relative bg-white rounded-xl p-8 border border-olive-drab/10 shadow-sm hover:shadow-xl hover:shadow-forest-green/10 hover:border-forest-green/30 transform hover:-translate-y-1 transition-all duration-300"
+          class="group relative bg-white dark:bg-near-black rounded-xl p-8 border border-olive-drab/10 dark:border-olive-drab/20 shadow-sm hover:shadow-xl hover:shadow-forest-green/10 hover:border-forest-green/30 dark:hover:border-forest-green/40 transform hover:-translate-y-1 transition-all duration-300"
         >
           {/* Icon with background */}
           <div class="w-14 h-14 mb-6 rounded-xl bg-gradient-to-br from-forest-green/10 to-olive-drab/10 flex items-center justify-center group-hover:from-forest-green/20 group-hover:to-olive-drab/20 transition-all duration-300">
@@ -57,10 +57,10 @@ const services: Service[] = [
           </div>
 
           {/* Content */}
-          <h3 class="text-xl font-semibold text-dark-olive mb-3 group-hover:text-forest-green transition-colors duration-300">
+          <h3 class="text-xl font-semibold text-dark-olive dark:text-off-white mb-3 group-hover:text-forest-green transition-colors duration-300">
             {title}
           </h3>
-          <p class="text-near-black/70 leading-relaxed">{description}</p>
+          <p class="text-near-black/70 dark:text-off-white/70 leading-relaxed">{description}</p>
 
           {/* Decorative corner accent */}
           <div class="absolute top-0 right-0 w-16 h-16 overflow-hidden rounded-tr-xl">
