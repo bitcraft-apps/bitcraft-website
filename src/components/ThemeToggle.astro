@@ -36,11 +36,12 @@ import { THEME_COLORS } from '../consts';
   }
 
   function initThemeToggle() {
+    // Always clean up previous listeners first to prevent memory leaks on View Transitions
+    window.__themeController?.abort();
+
     const button = document.getElementById('theme-toggle');
     if (!button) return;
 
-    // Clean up previous listeners to prevent memory leaks on View Transitions
-    window.__themeController?.abort();
     const controller = new AbortController();
     window.__themeController = controller;
 

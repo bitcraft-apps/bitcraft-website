@@ -9,8 +9,7 @@ export const BACKGROUND_COLOR = '#FFFFFF';
 
 /**
  * Theme colors for browser chrome (theme-color meta tag).
- * NOTE: These values are duplicated in BaseHead.astro's inline script
- * because is:inline scripts can't access imports. Keep them in sync!
+ * Used by BaseHead.astro via define:vars for the inline theme init script.
  */
 export const THEME_COLORS = {
   light: '#f5f5f5',

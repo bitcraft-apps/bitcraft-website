@@ -50,10 +50,10 @@ const jsonLd = {
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width" />
+<meta name="theme-color" content={THEME_COLORS.light} />
 
 <!-- Theme initialization - must run before page renders to prevent flash -->
-<!-- NOTE: Colors here must match THEME_COLORS in consts.ts (inline scripts can't use imports) -->
-<script is:inline>
+<script is:inline define:vars={{ themeLight: THEME_COLORS.light, themeDark: THEME_COLORS.dark }}>
 (function() {
   var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   var theme;
@@ -66,7 +66,7 @@ const jsonLd = {
   document.documentElement.style.colorScheme = theme;
   // Update theme-color meta tag to match initial theme
   var meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', theme === 'dark' ? '#1a1a1a' : '#f5f5f5');
+  if (meta) meta.setAttribute('content', theme === 'dark' ? themeDark : themeLight);
 })();
 </script>
 
@@ -75,7 +75,6 @@ const jsonLd = {
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
-<meta name="theme-color" content={THEME_COLORS.light} />
 <meta name="generator" content={Astro.generator} />
 
 <!-- Canonical URL -->
