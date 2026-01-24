@@ -202,21 +202,53 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
       if (initializedForms.has(form)) return;
       initializedForms.add(form);
 
-      const submitButton = form.querySelector('[data-submit-button]') as HTMLButtonElement;
-      const buttonText = form.querySelector('[data-button-text]') as HTMLSpanElement;
-      const buttonLoading = form.querySelector('[data-button-loading]') as HTMLSpanElement;
-      const successMessage = form.querySelector('[data-success-message]') as HTMLDivElement;
-      const errorMessage = form.querySelector('[data-error-message]') as HTMLDivElement;
+      const submitButton = form.querySelector<HTMLButtonElement>('[data-submit-button]');
+      const buttonText = form.querySelector<HTMLSpanElement>('[data-button-text]');
+      const buttonLoading = form.querySelector<HTMLSpanElement>('[data-button-loading]');
+      const successMessage = form.querySelector<HTMLDivElement>('[data-success-message]');
+      const errorMessage = form.querySelector<HTMLDivElement>('[data-error-message]');
 
       // Field elements
-      const nameInput = form.querySelector('[data-field="name"]') as HTMLInputElement;
-      const emailInput = form.querySelector('[data-field="email"]') as HTMLInputElement;
-      const messageInput = form.querySelector('[data-field="message"]') as HTMLTextAreaElement;
+      const nameInput = form.querySelector<HTMLInputElement>('[data-field="name"]');
+      const emailInput = form.querySelector<HTMLInputElement>('[data-field="email"]');
+      const messageInput = form.querySelector<HTMLTextAreaElement>('[data-field="message"]');
 
       // Error elements
-      const nameError = form.querySelector('[data-error="name"]') as HTMLParagraphElement;
-      const emailError = form.querySelector('[data-error="email"]') as HTMLParagraphElement;
-      const messageError = form.querySelector('[data-error="message"]') as HTMLParagraphElement;
+      const nameError = form.querySelector<HTMLParagraphElement>('[data-error="name"]');
+      const emailError = form.querySelector<HTMLParagraphElement>('[data-error="email"]');
+      const messageError = form.querySelector<HTMLParagraphElement>('[data-error="message"]');
+
+      // Guard: ensure all required elements exist before attaching handlers
+      if (
+        !submitButton ||
+        !buttonText ||
+        !buttonLoading ||
+        !successMessage ||
+        !errorMessage ||
+        !nameInput ||
+        !emailInput ||
+        !messageInput ||
+        !nameError ||
+        !emailError ||
+        !messageError
+      ) {
+        return;
+      }
+
+      // Create local references with narrowed types for use in closures
+      const elements = {
+        submitButton,
+        buttonText,
+        buttonLoading,
+        successMessage,
+        errorMessage,
+        nameInput,
+        emailInput,
+        messageInput,
+        nameError,
+        emailError,
+        messageError,
+      };
 
       /**
        * Clear validation state for a single field
@@ -235,9 +267,9 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
        * Clear validation state for all fields
        */
       function clearAllValidation(): void {
-        clearFieldValidation(nameInput, nameError);
-        clearFieldValidation(emailInput, emailError);
-        clearFieldValidation(messageInput, messageError);
+        clearFieldValidation(elements.nameInput, elements.nameError);
+        clearFieldValidation(elements.emailInput, elements.emailError);
+        clearFieldValidation(elements.messageInput, elements.messageError);
       }
 
       /**
@@ -278,9 +310,9 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
        * Validate all fields
        */
       function validateForm(): boolean {
-        const isNameValid = validateField(nameInput, nameError);
-        const isEmailValid = validateField(emailInput, emailError);
-        const isMessageValid = validateField(messageInput, messageError);
+        const isNameValid = validateField(elements.nameInput, elements.nameError);
+        const isEmailValid = validateField(elements.emailInput, elements.emailError);
+        const isMessageValid = validateField(elements.messageInput, elements.messageError);
         return isNameValid && isEmailValid && isMessageValid;
       }
 
@@ -288,17 +320,17 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
        * Set loading state
        */
       function setLoading(loading: boolean): void {
-        submitButton.disabled = loading;
-        buttonText.classList.toggle('hidden', loading);
-        buttonLoading.classList.toggle('hidden', !loading);
+        elements.submitButton.disabled = loading;
+        elements.buttonText.classList.toggle('hidden', loading);
+        elements.buttonLoading.classList.toggle('hidden', !loading);
       }
 
       /**
        * Reset form state and hide messages
        */
       function resetFormState(): void {
-        successMessage.classList.add('hidden');
-        errorMessage.classList.add('hidden');
+        elements.successMessage.classList.add('hidden');
+        elements.errorMessage.classList.add('hidden');
       }
 
       /**
@@ -306,17 +338,17 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
        */
       function createTrimmedFormData(): FormData {
         const formData = new FormData();
-        formData.append('name', nameInput.value.trim());
-        formData.append('email', emailInput.value.trim());
-        formData.append('message', messageInput.value.trim());
+        formData.append('name', elements.nameInput.value.trim());
+        formData.append('email', elements.emailInput.value.trim());
+        formData.append('message', elements.messageInput.value.trim());
         return formData;
       }
 
       // Add blur validation to each field
       [
-        { input: nameInput, error: nameError },
-        { input: emailInput, error: emailError },
-        { input: messageInput, error: messageError },
+        { input: elements.nameInput, error: elements.nameError },
+        { input: elements.emailInput, error: elements.emailError },
+        { input: elements.messageInput, error: elements.messageError },
       ].forEach(({ input, error }) => {
         input.addEventListener('blur', () => validateField(input, error));
         input.addEventListener('input', () => {
@@ -351,18 +383,18 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
           });
 
           if (response.ok) {
-            successMessage.classList.remove('hidden');
+            elements.successMessage.classList.remove('hidden');
             form.reset();
             clearAllValidation();
             // Scroll success message into view
-            successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            elements.successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           } else {
             throw new Error('Form submission failed');
           }
         } catch (error) {
           console.error('Contact form submission failed:', error);
-          errorMessage.classList.remove('hidden');
-          errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          elements.errorMessage.classList.remove('hidden');
+          elements.errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         } finally {
           setLoading(false);
         }
