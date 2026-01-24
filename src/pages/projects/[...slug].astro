@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -20,6 +21,14 @@ const { Content } = await render(project);
       <a href="/projects" class="text-olive-drab hover:text-dark-olive mb-4 inline-block">
         &larr; Back to Projects
       </a>
+      {
+        project.data.status === 'in-progress' && (
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 mb-4 bg-olive-drab/10 text-olive-drab text-xs font-medium rounded-full">
+            <Icon name="clock" size="xs" class="w-3.5 h-3.5" />
+            In Progress
+          </div>
+        )
+      }
       <h1 class="text-4xl font-bold text-dark-olive mb-4">{project.data.title}</h1>
       <p class="text-lg text-near-black mb-4">{project.data.description}</p>
       <div class="flex items-center gap-4 text-sm text-olive-drab">

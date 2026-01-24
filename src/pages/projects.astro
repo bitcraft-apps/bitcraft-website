@@ -19,13 +19,11 @@ const sortedProjects = [...projects].sort(
         <code class="text-sm font-mono text-dark-olive">Coming soon...</code>
       </div>
     ) : (
-      <ul class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
         {sortedProjects.map((project) => (
-          <li>
-            <ProjectCard project={project} />
-          </li>
+          <ProjectCard project={project} />
         ))}
-      </ul>
+      </div>
     )
   }
 </BaseLayout>

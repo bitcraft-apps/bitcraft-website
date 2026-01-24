@@ -15,7 +15,7 @@ interface Props {
 }
 
 const { project, featured = false, priority = false } = Astro.props;
-const { title, description, pubDate, repository, image, tags } = project.data;
+const { title, description, pubDate, repository, image, tags, status } = project.data;
 
 const formattedDate = pubDate.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -51,15 +51,25 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
   }
 
   <div class="p-6">
-    {/* Featured badge */}
-    {
-      featured && (
-        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 mb-3 bg-forest-green/10 text-forest-green text-xs font-medium rounded-full">
-          <Icon name="star" size="xs" class="w-3.5 h-3.5" />
-          Featured
-        </div>
-      )
-    }
+    {/* Status badges */}
+    <div class="flex flex-wrap gap-2 mb-3">
+      {
+        featured && (
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-forest-green/10 text-forest-green text-xs font-medium rounded-full">
+            <Icon name="star" size="xs" class="w-3.5 h-3.5" />
+            Featured
+          </div>
+        )
+      }
+      {
+        status === 'in-progress' && (
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-olive-drab/10 text-olive-drab text-xs font-medium rounded-full">
+            <Icon name="clock" size="xs" class="w-3.5 h-3.5" />
+            In Progress
+          </div>
+        )
+      }
+    </div>
 
     <a href={`/projects/${project.id}`} class="block">
       <h2
