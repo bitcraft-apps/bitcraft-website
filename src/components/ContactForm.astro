@@ -49,7 +49,6 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
       autocomplete="name"
       placeholder="Your name"
       class="w-full px-4 py-3 border border-olive-drab/30 rounded-lg bg-white text-near-black placeholder-near-black/50 focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-transparent transition-shadow duration-200"
-      aria-describedby={`${uniqueId}-name-error`}
       data-field="name"
     />
     <p
@@ -75,7 +74,6 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
       autocomplete="email"
       placeholder="your@email.com"
       class="w-full px-4 py-3 border border-olive-drab/30 rounded-lg bg-white text-near-black placeholder-near-black/50 focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-transparent transition-shadow duration-200"
-      aria-describedby={`${uniqueId}-email-error`}
       data-field="email"
     />
     <p
@@ -100,7 +98,6 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
       rows="5"
       placeholder="How can I help you?"
       class="w-full px-4 py-3 border border-olive-drab/30 rounded-lg bg-white text-near-black placeholder-near-black/50 focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-transparent transition-shadow duration-200 resize-y"
-      aria-describedby={`${uniqueId}-message-error`}
       data-field="message"></textarea>
     <p
       id={`${uniqueId}-message-error`}
@@ -109,6 +106,21 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
       data-error="message"
     >
     </p>
+  </div>
+
+  <!-- Honeypot field for spam protection - bots will fill this, humans won't see it -->
+  <div class="absolute -left-[9999px]" aria-hidden="true">
+    <label for={`${uniqueId}-gotcha`}>
+      Don't fill this out if you're human
+      <input
+        type="text"
+        id={`${uniqueId}-gotcha`}
+        name="_gotcha"
+        tabindex="-1"
+        autocomplete="off"
+        data-field="honeypot"
+      />
+    </label>
   </div>
 
   <!-- Submit Button -->
@@ -232,6 +244,12 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
         !emailError ||
         !messageError
       ) {
+        if (import.meta.env.DEV) {
+          console.warn(
+            '[ContactForm] Failed to initialize form: one or more required DOM elements are missing.',
+            { formId: form.id },
+          );
+        }
         return;
       }
 
@@ -261,6 +279,7 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
         errorEl.textContent = '';
         input.classList.remove('border-red-500');
         input.removeAttribute('aria-invalid');
+        input.removeAttribute('aria-describedby');
       }
 
       /**
@@ -297,11 +316,13 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
           errorEl.classList.remove('hidden');
           input.classList.add('border-red-500');
           input.setAttribute('aria-invalid', 'true');
+          input.setAttribute('aria-describedby', errorEl.id);
           return false;
         } else {
           errorEl.classList.add('hidden');
           input.classList.remove('border-red-500');
           input.removeAttribute('aria-invalid');
+          input.removeAttribute('aria-describedby');
           return true;
         }
       }
