@@ -28,6 +28,9 @@
   /* Fonts */
   --font-sans: var(--bitcraft-font-sans);
   --font-mono: var(--bitcraft-font-mono);
+
+  /* Layout */
+  --header-height: var(--bitcraft-layout-header-height);
 }
 
 /* Base styles */
@@ -57,5 +60,19 @@
   code,
   pre {
     @apply font-mono;
+  }
+}
+
+@layer components {
+  /**
+   * Full viewport height section (minus header)
+   * Uses dvh for better mobile browser support (handles dynamic browser chrome)
+   */
+  .section-full-height {
+    min-height: calc(100vh - var(--header-height));
+    min-height: calc(100dvh - var(--header-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }

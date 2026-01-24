@@ -58,4 +58,7 @@
   /* Animation easing */
   --bitcraft-animation-ease-default: ease-in-out;
   --bitcraft-animation-ease-out: ease-out;
+
+  /* Layout */
+  --bitcraft-layout-header-height: 4rem; /* 64px - matches h-16 */
 }
