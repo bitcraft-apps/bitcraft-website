@@ -28,6 +28,9 @@
   /* Fonts */
   --font-sans: var(--bitcraft-font-sans);
   --font-mono: var(--bitcraft-font-mono);
+
+  /* Layout (website-specific, not from brand tokens) */
+  --header-height: 4rem; /* 64px - matches h-16 */
 }
 
 /* Base styles */
@@ -57,5 +60,28 @@
   code,
   pre {
     @apply font-mono;
+  }
+}
+
+@layer components {
+  /**
+   * Full viewport height section (minus header).
+   * Uses dvh with vh fallback for browsers without support.
+   * dvh (dynamic viewport height) handles iOS Safari's dynamic toolbar.
+   */
+  .section-full-height {
+    /* Fallback for browsers without dvh support */
+    min-height: calc(100vh - var(--header-height));
+    /* Modern browsers: handles dynamic browser chrome (iOS Safari toolbar) */
+    min-height: calc(100dvh - var(--header-height));
+  }
+
+  /** Full viewport height with vertical centering (for hero sections). */
+  .section-full-height-centered {
+    min-height: calc(100vh - var(--header-height));
+    min-height: calc(100dvh - var(--header-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }
