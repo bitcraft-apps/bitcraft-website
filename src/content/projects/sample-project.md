@@ -4,6 +4,7 @@ description: A placeholder project to demonstrate the content collection setup.
 pubDate: 2025-01-23
 repository: https://github.com/example/sample-project
 tags:
+  - featured
   - Astro
   - TypeScript
   - Demo

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import FeaturedProjects from "../components/FeaturedProjects.astro";
 ---
 
 <BaseLayout title="Bitcraft">
@@ -7,7 +8,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <p class="text-lg text-near-black font-sans mb-4">
     Web experiences and tools for <span class="text-forest-green font-bold">Bitcraft</span> and beyond.
   </p>
-  <div class="p-4 bg-off-white rounded-lg border border-olive-drab">
-    <code class="text-sm font-mono text-dark-olive">src/pages/index.astro</code>
-  </div>
+
+  <FeaturedProjects />
 </BaseLayout>

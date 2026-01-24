@@ -1,0 +1,38 @@
+---
+/**
+ * FeaturedProjects component for displaying featured projects on the homepage
+ * Filters projects by the 'featured' tag and displays up to 3 in a vertical list
+ */
+import { getCollection } from "astro:content";
+import ProjectCard from "./ProjectCard.astro";
+
+const projects = await getCollection("projects");
+
+// Filter projects that have the 'featured' tag
+const featuredProjects = projects
+  .filter((project) => project.data.tags?.includes("featured"))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+{featuredProjects.length > 0 && (
+  <section class="mt-12">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-bold text-dark-olive">Featured Projects</h2>
+      <a
+        href="/projects"
+        class="text-olive-drab hover:text-forest-green transition-colors"
+      >
+        View all projects &rarr;
+      </a>
+    </div>
+
+    <ul class="space-y-6">
+      {featuredProjects.map((project) => (
+        <li>
+          <ProjectCard project={project} />
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
