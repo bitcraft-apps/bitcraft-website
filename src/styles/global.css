@@ -34,6 +34,11 @@
 @layer base {
   html {
     @apply text-near-black bg-white dark:text-off-white dark:bg-near-black;
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
   }
 
   h1,
