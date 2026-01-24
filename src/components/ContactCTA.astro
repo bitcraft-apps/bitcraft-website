@@ -4,6 +4,7 @@
  * Used as final section on homepage
  */
 import { CONTACT } from '../consts';
+import Icon from './Icon.astro';
 ---
 
 <section
@@ -37,20 +38,7 @@ import { CONTACT } from '../consts';
         <div
           class="inline-flex items-center justify-center w-16 h-16 mb-6 rounded-full bg-gradient-to-br from-forest-green/10 to-olive-drab/10"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-8 h-8 text-forest-green"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="1.5"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z"
-            ></path>
-          </svg>
+          <Icon name="chat-bubble" size="lg" class="text-forest-green" />
         </div>
 
         <h2 id="contact-cta-heading" class="text-3xl sm:text-4xl font-bold text-dark-olive mb-4">
@@ -68,17 +56,7 @@ import { CONTACT } from '../consts';
           class="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-forest-green text-white font-semibold rounded-lg hover:bg-dark-olive hover:shadow-lg hover:shadow-forest-green/20 transform hover:-translate-y-0.5 transition-all duration-300"
         >
           Start a Conversation
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5 group-hover:translate-x-1 transition-transform"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"
-            ></path>
-          </svg>
+          <Icon name="arrow-right" size="sm" class="group-hover:translate-x-1 transition-transform" />
         </a>
 
         <!-- Secondary contact option -->

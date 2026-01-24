@@ -16,9 +16,13 @@ export const NAV_ITEMS: NavItem[] = [
 ];
 
 // Founder / Owner information
+const FOUNDER_NAME = 'Szymon Graczyk';
+
 export const FOUNDER = {
-  name: 'Szymon Graczyk',
-  initials: 'SG',
+  name: FOUNDER_NAME,
+  initials: FOUNDER_NAME.split(' ')
+    .map((n) => n[0])
+    .join(''),
   role: 'Founder & Lead Engineer',
   quote:
     'We treat every line of code as a piece of craftsmanship, because we believe the details matter.',

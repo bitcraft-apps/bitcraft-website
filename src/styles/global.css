@@ -8,6 +8,9 @@
 /* Brand tokens */
 @import './tokens.css';
 
+/* Shared animations */
+@import './animations.css';
+
 @import 'tailwindcss';
 
 @theme {

@@ -130,10 +130,6 @@ const currentPath = Astro.url.pathname;
 <script>
   // Track if document-level listeners have been registered to prevent accumulation
   let documentListenersRegistered = false;
-  // Track the current button to prevent duplicate click listeners on same element
-  let initializedButton: HTMLButtonElement | null = null;
-  // Track initialized mobile links to prevent duplicate click listeners
-  let initializedLinks: WeakSet<Element> = new WeakSet();
 
   function initMobileMenu() {
     const button = document.getElementById('mobile-menu-button') as HTMLButtonElement | null;
@@ -141,10 +137,9 @@ const currentPath = Astro.url.pathname;
 
     if (!button || !menu) return;
 
-    // Prevent duplicate initialization on the same button element
-    // This handles the case when both direct call and astro:page-load fire
-    if (initializedButton === button) return;
-    initializedButton = button;
+    // Prevent duplicate initialization using data attribute
+    if (button.dataset.initialized === 'true') return;
+    button.dataset.initialized = 'true';
 
     const hamburgerIcon = button.querySelector('.hamburger-icon') as HTMLElement | null;
     const closeIcon = button.querySelector('.close-icon') as HTMLElement | null;
@@ -204,14 +199,10 @@ const currentPath = Astro.url.pathname;
     button.addEventListener('click', toggleMenu);
 
     // Close menu when clicking a link (for SPA-like behavior)
-    // Only add listeners to links that haven't been initialized yet
     mobileLinks.forEach((link) => {
-      if (!initializedLinks.has(link)) {
-        initializedLinks.add(link);
-        link.addEventListener('click', () => {
-          closeMenu();
-        });
-      }
+      link.addEventListener('click', () => {
+        closeMenu();
+      });
     });
 
     // Register document-level listeners only once to prevent accumulation
@@ -227,9 +218,5 @@ const currentPath = Astro.url.pathname;
   initMobileMenu();
 
   // Re-initialize on View Transitions navigation (when enabled)
-  // Reset initializedButton so new DOM elements get initialized
-  document.addEventListener('astro:page-load', () => {
-    initializedButton = null;
-    initMobileMenu();
-  });
+  document.addEventListener('astro:page-load', initMobileMenu);
 </script>

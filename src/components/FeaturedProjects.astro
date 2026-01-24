@@ -5,6 +5,10 @@
  */
 import { getCollection } from 'astro:content';
 import ProjectCard from './ProjectCard.astro';
+import Icon from './Icon.astro';
+
+/** Maximum number of featured projects to display */
+const MAX_FEATURED_PROJECTS = 3;
 
 const projects = await getCollection('projects');
 
@@ -12,7 +16,7 @@ const projects = await getCollection('projects');
 const featuredProjects = projects
   .filter((project) => project.data.tags?.includes('featured'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 3);
+  .slice(0, MAX_FEATURED_PROJECTS);
 ---
 
 {
@@ -35,16 +39,7 @@ const featuredProjects = projects
           class="group inline-flex items-center gap-2 text-forest-green hover:text-dark-olive font-medium transition-colors whitespace-nowrap"
         >
           View all projects
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5 group-hover:translate-x-1 transition-transform"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
+          <Icon name="arrow-right" size="sm" class="group-hover:translate-x-1 transition-transform" />
         </a>
       </div>
 
