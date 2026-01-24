@@ -1,9 +1,15 @@
 // Place any global data in this file.
 // You can import this data from anywhere in your site by using the `import` keyword.
 
-export const SITE_URL = 'https://bitcraftapps.dev';
 export const SITE_TITLE = 'Bitcraft';
 export const SITE_DESCRIPTION = 'Bitcraft — web experiences and tools for Bitcraft and beyond.';
+
+/**
+ * Default Open Graph image path (relative to site root).
+ * Used for social sharing previews when no specific image is provided.
+ * Recommended dimensions: 1200x630px minimum for optimal display on social platforms.
+ */
+export const DEFAULT_OG_IMAGE = '/brand/og-default.png';
 
 /** Tag used to mark projects as featured on the homepage */
 export const FEATURED_TAG = 'featured' as const;
