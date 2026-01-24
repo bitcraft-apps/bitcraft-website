@@ -6,6 +6,9 @@ export const SITE_DESCRIPTION = 'Bitcraft — web experiences and tools for Bitc
 /** Tag used to mark projects as featured on the homepage */
 export const FEATURED_TAG = 'featured' as const;
 
+/** Maximum number of featured projects to display on homepage */
+export const MAX_FEATURED_PROJECTS = 3;
+
 export interface NavItem {
   href: string;
   label: string;
@@ -23,8 +26,9 @@ const FOUNDER_NAME = 'Szymon Graczyk';
 
 export const FOUNDER = {
   name: FOUNDER_NAME,
+  // Handle hyphenated names (e.g., "Jean-Pierre" -> "JP") and spaces
   initials:
-    FOUNDER_NAME.split(' ')
+    FOUNDER_NAME.split(/[\s-]+/)
       .filter((n) => n.length > 0)
       .map((n) => n[0])
       .join('') || '?',

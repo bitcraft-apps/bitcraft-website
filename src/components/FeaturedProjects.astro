@@ -6,10 +6,7 @@
 import { getCollection } from 'astro:content';
 import ProjectCard from './ProjectCard.astro';
 import Icon from './Icon.astro';
-import { FEATURED_TAG } from '../consts';
-
-/** Maximum number of featured projects to display */
-const MAX_FEATURED_PROJECTS = 3;
+import { FEATURED_TAG, MAX_FEATURED_PROJECTS } from '../consts';
 
 const projects = await getCollection('projects');
 

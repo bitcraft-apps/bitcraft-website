@@ -21,11 +21,14 @@ const { title, description = SITE_DESCRIPTION } = Astro.props;
   <body>
     <Header />
     <main>
+      <!-- Full-width content (e.g., Hero sections) -->
       <slot name="fullWidth" />
+      <!-- Standard constrained content -->
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <slot />
       </div>
-      <slot name="afterMain" />
+      <!-- Full-width content at bottom of main (e.g., CTA sections) -->
+      <slot name="bottomContent" />
     </main>
     <Footer />
   </body>

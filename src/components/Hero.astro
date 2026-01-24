@@ -106,10 +106,28 @@ import Icon from './Icon.astro';
   </div>
 
   <!-- Scroll indicator -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce-slow" aria-hidden="true">
-    <div class="flex flex-col items-center gap-2 text-olive-drab/50">
-      <span class="text-xs font-medium tracking-wider uppercase">Scroll</span>
-      <Icon name="arrow-down" size="sm" />
-    </div>
-  </div>
+  <button
+    type="button"
+    class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce-slow flex flex-col items-center gap-2 text-olive-drab/50 hover:text-olive-drab transition-colors cursor-pointer bg-transparent border-none"
+    aria-label="Scroll to content"
+    id="scroll-indicator"
+  >
+    <span class="text-xs font-medium tracking-wider uppercase">Scroll</span>
+    <Icon name="arrow-down" size="sm" />
+  </button>
 </section>
+
+<script>
+  function initScrollIndicator() {
+    const button = document.getElementById('scroll-indicator');
+    if (!button || button.dataset.initialized === 'true') return;
+    button.dataset.initialized = 'true';
+
+    button.addEventListener('click', () => {
+      window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+    });
+  }
+
+  initScrollIndicator();
+  document.addEventListener('astro:page-load', initScrollIndicator);
+</script>
