@@ -393,15 +393,24 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
         });
       });
 
+      // Track submission state to prevent double-clicks
+      let isSubmitting = false;
+
       // Form submission handler
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        // Guard against double submissions
+        if (isSubmitting) return;
+        isSubmitting = true;
+
         resetFormState();
 
         if (!validateForm()) {
           // Focus first invalid field
           const firstInvalid = form.querySelector('[aria-invalid="true"]') as HTMLElement;
           firstInvalid?.focus();
+          isSubmitting = false;
           return;
         }
 
@@ -457,6 +466,7 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
           elements.errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         } finally {
           setLoading(false);
+          isSubmitting = false;
         }
       });
     });
