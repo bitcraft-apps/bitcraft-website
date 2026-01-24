@@ -1,10 +1,38 @@
 ---
+import { SITE_URL, SITE_TITLE, CONTACT } from '../consts';
+
 interface Props {
   title: string;
   description: string;
+  image?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, image = '/brand/og-default.png' } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, SITE_URL).href;
+const ogImageURL = new URL(image, SITE_URL).href;
+
+// JSON-LD structured data for Organization and WebSite
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${SITE_URL}/#organization`,
+      name: SITE_TITLE,
+      url: SITE_URL,
+      logo: `${SITE_URL}/brand/og-default.png`,
+      sameAs: [CONTACT.github],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: SITE_TITLE,
+      publisher: { '@id': `${SITE_URL}/#organization` },
+    },
+  ],
+};
 ---
 
 <meta charset="UTF-8" />
@@ -12,13 +40,32 @@ const { title, description } = Astro.props;
 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#556B2F" />
 <meta name="generator" content={Astro.generator} />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="description" content={description} />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:site_name" content={SITE_TITLE} />
+<meta property="og:locale" content="en_US" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content="/brand/og-default.png" />
+<meta property="og:image" content={ogImageURL} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageURL} />
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
