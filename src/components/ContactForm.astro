@@ -7,16 +7,29 @@
  */
 
 interface Props {
-  /** Optional Formspree form ID - defaults to placeholder */
+  /** Optional Formspree form ID - overrides environment variable if provided */
   formId?: string;
 }
 
-const { formId = "YOUR_FORMSPREE_ID" } = Astro.props;
+// Use prop if provided, otherwise fall back to environment variable
+const formId = Astro.props.formId ?? import.meta.env.PUBLIC_FORMSPREE_ID;
+
+// Build-time check for missing Formspree ID
+if (!formId) {
+  throw new Error(
+    'Missing Formspree ID. Set PUBLIC_FORMSPREE_ID environment variable or pass formId prop to ContactForm.',
+  );
+}
+
 const formAction = `https://formspree.io/f/${formId}`;
+
+// Generate unique ID for this form instance to prevent conflicts with multiple forms
+const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
 ---
 
 <form
-  id="contact-form"
+  id={`${uniqueId}-form`}
+  data-contact-form
   action={formAction}
   method="POST"
   class="space-y-6"
@@ -24,72 +37,103 @@ const formAction = `https://formspree.io/f/${formId}`;
 >
   <!-- Name Field -->
   <div>
-    <label for="name" class="block text-sm font-semibold text-near-black mb-2">
+    <label for={`${uniqueId}-name`} class="block text-sm font-semibold text-near-black mb-2">
       Name <span class="text-forest-green" aria-hidden="true">*</span>
       <span class="sr-only">(required)</span>
     </label>
     <input
       type="text"
-      id="name"
+      id={`${uniqueId}-name`}
       name="name"
       required
       autocomplete="name"
       placeholder="Your name"
       class="w-full px-4 py-3 border border-olive-drab/30 rounded-lg bg-white text-near-black placeholder-near-black/50 focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-transparent transition-shadow duration-200"
-      aria-describedby="name-error"
+      aria-describedby={`${uniqueId}-name-error`}
+      data-field="name"
     />
-    <p id="name-error" class="mt-1 text-sm text-red-600 hidden" role="alert"></p>
+    <p
+      id={`${uniqueId}-name-error`}
+      class="mt-1 text-sm text-red-600 hidden"
+      role="alert"
+      data-error="name"
+    >
+    </p>
   </div>
 
   <!-- Email Field -->
   <div>
-    <label for="email" class="block text-sm font-semibold text-near-black mb-2">
+    <label for={`${uniqueId}-email`} class="block text-sm font-semibold text-near-black mb-2">
       Email <span class="text-forest-green" aria-hidden="true">*</span>
       <span class="sr-only">(required)</span>
     </label>
     <input
       type="email"
-      id="email"
+      id={`${uniqueId}-email`}
       name="email"
       required
       autocomplete="email"
       placeholder="your@email.com"
       class="w-full px-4 py-3 border border-olive-drab/30 rounded-lg bg-white text-near-black placeholder-near-black/50 focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-transparent transition-shadow duration-200"
-      aria-describedby="email-error"
+      aria-describedby={`${uniqueId}-email-error`}
+      data-field="email"
     />
-    <p id="email-error" class="mt-1 text-sm text-red-600 hidden" role="alert"></p>
+    <p
+      id={`${uniqueId}-email-error`}
+      class="mt-1 text-sm text-red-600 hidden"
+      role="alert"
+      data-error="email"
+    >
+    </p>
   </div>
 
   <!-- Message Field -->
   <div>
-    <label for="message" class="block text-sm font-semibold text-near-black mb-2">
+    <label for={`${uniqueId}-message`} class="block text-sm font-semibold text-near-black mb-2">
       Message <span class="text-forest-green" aria-hidden="true">*</span>
       <span class="sr-only">(required)</span>
     </label>
     <textarea
-      id="message"
+      id={`${uniqueId}-message`}
       name="message"
       required
       rows="5"
       placeholder="How can I help you?"
       class="w-full px-4 py-3 border border-olive-drab/30 rounded-lg bg-white text-near-black placeholder-near-black/50 focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-transparent transition-shadow duration-200 resize-y"
-      aria-describedby="message-error"
-    ></textarea>
-    <p id="message-error" class="mt-1 text-sm text-red-600 hidden" role="alert"></p>
+      aria-describedby={`${uniqueId}-message-error`}
+      data-field="message"></textarea>
+    <p
+      id={`${uniqueId}-message-error`}
+      class="mt-1 text-sm text-red-600 hidden"
+      role="alert"
+      data-error="message"
+    >
+    </p>
   </div>
 
   <!-- Submit Button -->
   <div>
     <button
       type="submit"
-      id="submit-button"
+      data-submit-button
       class="w-full sm:w-auto px-8 py-3 bg-dark-olive text-white font-semibold rounded-lg hover:bg-olive-drab focus:outline-none focus:ring-2 focus:ring-forest-green focus:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
     >
-      <span id="button-text">Send Message</span>
-      <span id="button-loading" class="hidden">
-        <svg class="animate-spin inline-block h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      <span data-button-text>Send Message</span>
+      <span data-button-loading class="hidden">
+        <svg
+          class="animate-spin inline-block h-5 w-5 mr-2"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
+          ></circle>
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
         </svg>
         Sending...
       </span>
@@ -98,14 +142,21 @@ const formAction = `https://formspree.io/f/${formId}`;
 
   <!-- Success Message -->
   <div
-    id="success-message"
+    data-success-message
     class="hidden p-4 bg-forest-green/10 border border-forest-green rounded-lg"
     role="alert"
     aria-live="polite"
   >
     <div class="flex items-center">
-      <svg class="h-5 w-5 text-forest-green mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      <svg
+        class="h-5 w-5 text-forest-green mr-3 flex-shrink-0"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"
+        ></path>
       </svg>
       <p class="text-forest-green font-medium">
         Thank you! Your message has been sent successfully. I'll get back to you soon.
@@ -115,14 +166,24 @@ const formAction = `https://formspree.io/f/${formId}`;
 
   <!-- Error Message -->
   <div
-    id="error-message"
+    data-error-message
     class="hidden p-4 bg-red-50 border border-red-500 rounded-lg"
     role="alert"
     aria-live="polite"
   >
     <div class="flex items-center">
-      <svg class="h-5 w-5 text-red-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      <svg
+        class="h-5 w-5 text-red-500 mr-3 flex-shrink-0"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"></path>
       </svg>
       <p class="text-red-600 font-medium">
         Something went wrong. Please try again or email me directly.
@@ -132,124 +193,160 @@ const formAction = `https://formspree.io/f/${formId}`;
 </form>
 
 <script>
-  const form = document.getElementById('contact-form') as HTMLFormElement;
-  const submitButton = document.getElementById('submit-button') as HTMLButtonElement;
-  const buttonText = document.getElementById('button-text') as HTMLSpanElement;
-  const buttonLoading = document.getElementById('button-loading') as HTMLSpanElement;
-  const successMessage = document.getElementById('success-message') as HTMLDivElement;
-  const errorMessage = document.getElementById('error-message') as HTMLDivElement;
+  // Initialize all contact forms on the page (supports multiple instances)
+  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
+    const submitButton = form.querySelector('[data-submit-button]') as HTMLButtonElement;
+    const buttonText = form.querySelector('[data-button-text]') as HTMLSpanElement;
+    const buttonLoading = form.querySelector('[data-button-loading]') as HTMLSpanElement;
+    const successMessage = form.querySelector('[data-success-message]') as HTMLDivElement;
+    const errorMessage = form.querySelector('[data-error-message]') as HTMLDivElement;
 
-  // Field elements
-  const nameInput = document.getElementById('name') as HTMLInputElement;
-  const emailInput = document.getElementById('email') as HTMLInputElement;
-  const messageInput = document.getElementById('message') as HTMLTextAreaElement;
+    // Field elements
+    const nameInput = form.querySelector('[data-field="name"]') as HTMLInputElement;
+    const emailInput = form.querySelector('[data-field="email"]') as HTMLInputElement;
+    const messageInput = form.querySelector('[data-field="message"]') as HTMLTextAreaElement;
 
-  // Error elements
-  const nameError = document.getElementById('name-error') as HTMLParagraphElement;
-  const emailError = document.getElementById('email-error') as HTMLParagraphElement;
-  const messageError = document.getElementById('message-error') as HTMLParagraphElement;
+    // Error elements
+    const nameError = form.querySelector('[data-error="name"]') as HTMLParagraphElement;
+    const emailError = form.querySelector('[data-error="email"]') as HTMLParagraphElement;
+    const messageError = form.querySelector('[data-error="message"]') as HTMLParagraphElement;
 
-  /**
-   * Validate a single field and show/hide error message
-   */
-  function validateField(input: HTMLInputElement | HTMLTextAreaElement, errorEl: HTMLParagraphElement): boolean {
-    let errorText = '';
-
-    if (!input.value.trim()) {
-      errorText = 'This field is required';
-    } else if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
-      errorText = 'Please enter a valid email address';
-    }
-
-    if (errorText) {
-      errorEl.textContent = errorText;
-      errorEl.classList.remove('hidden');
-      input.classList.add('border-red-500');
-      input.setAttribute('aria-invalid', 'true');
-      return false;
-    } else {
+    /**
+     * Clear validation state for a single field
+     */
+    function clearFieldValidation(
+      input: HTMLInputElement | HTMLTextAreaElement,
+      errorEl: HTMLParagraphElement,
+    ): void {
       errorEl.classList.add('hidden');
+      errorEl.textContent = '';
       input.classList.remove('border-red-500');
       input.removeAttribute('aria-invalid');
-      return true;
     }
-  }
 
-  /**
-   * Validate all fields
-   */
-  function validateForm(): boolean {
-    const isNameValid = validateField(nameInput, nameError);
-    const isEmailValid = validateField(emailInput, emailError);
-    const isMessageValid = validateField(messageInput, messageError);
-    return isNameValid && isEmailValid && isMessageValid;
-  }
+    /**
+     * Clear validation state for all fields
+     */
+    function clearAllValidation(): void {
+      clearFieldValidation(nameInput, nameError);
+      clearFieldValidation(emailInput, emailError);
+      clearFieldValidation(messageInput, messageError);
+    }
 
-  /**
-   * Set loading state
-   */
-  function setLoading(loading: boolean): void {
-    submitButton.disabled = loading;
-    buttonText.classList.toggle('hidden', loading);
-    buttonLoading.classList.toggle('hidden', !loading);
-  }
+    /**
+     * Validate a single field and show/hide error message
+     */
+    function validateField(
+      input: HTMLInputElement | HTMLTextAreaElement,
+      errorEl: HTMLParagraphElement,
+    ): boolean {
+      const trimmedValue = input.value.trim();
+      let errorText = '';
 
-  /**
-   * Reset form and hide messages
-   */
-  function resetFormState(): void {
-    successMessage.classList.add('hidden');
-    errorMessage.classList.add('hidden');
-  }
-
-  // Add blur validation to each field
-  [nameInput, emailInput, messageInput].forEach((input, index) => {
-    const errorEl = [nameError, emailError, messageError][index];
-    input.addEventListener('blur', () => validateField(input, errorEl));
-    input.addEventListener('input', () => {
-      if (input.getAttribute('aria-invalid')) {
-        validateField(input, errorEl);
+      if (!trimmedValue) {
+        errorText = 'This field is required';
+      } else if (
+        input instanceof HTMLInputElement &&
+        input.type === 'email' &&
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedValue)
+      ) {
+        errorText = 'Please enter a valid email address';
       }
-    });
-  });
 
-  // Form submission handler
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    resetFormState();
-
-    if (!validateForm()) {
-      // Focus first invalid field
-      const firstInvalid = form.querySelector('[aria-invalid="true"]') as HTMLElement;
-      firstInvalid?.focus();
-      return;
+      if (errorText) {
+        errorEl.textContent = errorText;
+        errorEl.classList.remove('hidden');
+        input.classList.add('border-red-500');
+        input.setAttribute('aria-invalid', 'true');
+        return false;
+      } else {
+        errorEl.classList.add('hidden');
+        input.classList.remove('border-red-500');
+        input.removeAttribute('aria-invalid');
+        return true;
+      }
     }
 
-    setLoading(true);
+    /**
+     * Validate all fields
+     */
+    function validateForm(): boolean {
+      const isNameValid = validateField(nameInput, nameError);
+      const isEmailValid = validateField(emailInput, emailError);
+      const isMessageValid = validateField(messageInput, messageError);
+      return isNameValid && isEmailValid && isMessageValid;
+    }
 
-    try {
-      const formData = new FormData(form);
-      const response = await fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
+    /**
+     * Set loading state
+     */
+    function setLoading(loading: boolean): void {
+      submitButton.disabled = loading;
+      buttonText.classList.toggle('hidden', loading);
+      buttonLoading.classList.toggle('hidden', !loading);
+    }
+
+    /**
+     * Reset form state and hide messages
+     */
+    function resetFormState(): void {
+      successMessage.classList.add('hidden');
+      errorMessage.classList.add('hidden');
+    }
+
+    // Add blur validation to each field
+    [
+      { input: nameInput, error: nameError },
+      { input: emailInput, error: emailError },
+      { input: messageInput, error: messageError },
+    ].forEach(({ input, error }) => {
+      input.addEventListener('blur', () => validateField(input, error));
+      input.addEventListener('input', () => {
+        if (input.getAttribute('aria-invalid')) {
+          validateField(input, error);
         }
       });
+    });
 
-      if (response.ok) {
-        successMessage.classList.remove('hidden');
-        form.reset();
-        // Scroll success message into view
-        successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      } else {
-        throw new Error('Form submission failed');
+    // Form submission handler
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      resetFormState();
+
+      if (!validateForm()) {
+        // Focus first invalid field
+        const firstInvalid = form.querySelector('[aria-invalid="true"]') as HTMLElement;
+        firstInvalid?.focus();
+        return;
       }
-    } catch (error) {
-      errorMessage.classList.remove('hidden');
-      errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    } finally {
-      setLoading(false);
-    }
+
+      setLoading(true);
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Accept: 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          successMessage.classList.remove('hidden');
+          form.reset();
+          clearAllValidation();
+          // Scroll success message into view
+          successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+          throw new Error('Form submission failed');
+        }
+      } catch (error) {
+        errorMessage.classList.remove('hidden');
+        errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } finally {
+        setLoading(false);
+      }
+    });
   });
 </script>
