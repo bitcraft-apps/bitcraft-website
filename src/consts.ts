@@ -7,6 +7,9 @@ export const SITE_DESCRIPTION = 'Bitcraft — web experiences and tools for Bitc
 /** Brand color used for theme-color meta tag and PWA manifest. */
 export const BRAND_COLOR = '#556B2F';
 
+/** Background color for PWA splash screen. */
+export const BACKGROUND_COLOR = '#FFFFFF';
+
 /**
  * Default Open Graph image configuration.
  * Used for social sharing previews when no specific image is provided.

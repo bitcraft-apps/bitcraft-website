@@ -3,11 +3,12 @@ import { getSiteUrl } from '../consts';
 
 export const GET: APIRoute = () => {
   const siteUrl = getSiteUrl();
+  const sitemapUrl = new URL('/sitemap-index.xml', siteUrl).href;
 
   const robotsTxt = `User-agent: *
 Allow: /
 
-Sitemap: ${siteUrl}/sitemap-index.xml
+Sitemap: ${sitemapUrl}
 `;
 
   return new Response(robotsTxt, {

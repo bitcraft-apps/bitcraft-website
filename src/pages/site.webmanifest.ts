@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { SITE_TITLE, BRAND_COLOR } from '../consts';
+import { SITE_TITLE, BRAND_COLOR, BACKGROUND_COLOR } from '../consts';
 
 export const GET: APIRoute = () => {
   const manifest = {
@@ -16,9 +16,15 @@ export const GET: APIRoute = () => {
         sizes: '512x512',
         type: 'image/png',
       },
+      {
+        src: '/android-chrome-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable',
+      },
     ],
     theme_color: BRAND_COLOR,
-    background_color: '#FFFFFF',
+    background_color: BACKGROUND_COLOR,
     display: 'standalone',
   };
 

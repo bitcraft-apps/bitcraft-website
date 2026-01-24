@@ -5,19 +5,16 @@ interface Props {
   title: string;
   description: string;
   image?: string;
-  /** Robots directive (defaults to "index, follow"). Use "noindex, nofollow" for private pages. */
-  robots?: string;
 }
 
-const { title, description, image = DEFAULT_OG_IMAGE.path, robots = 'index, follow' } = Astro.props;
-
-// Use centralized site URL helper
-const siteUrl = getSiteUrl();
+const { title, description, image = DEFAULT_OG_IMAGE.path } = Astro.props;
 
 // Fail build if site URL is missing in production (would break SEO)
-if (!import.meta.env.SITE && import.meta.env.PROD) {
+if (import.meta.env.PROD && !import.meta.env.SITE) {
   throw new Error('SITE URL must be configured in astro.config.mjs for production builds');
 }
+
+const siteUrl = getSiteUrl();
 const canonicalURL = new URL(Astro.url.pathname, siteUrl).href;
 const ogImageURL = new URL(image, siteUrl).href;
 
@@ -69,7 +66,7 @@ const jsonLd = {
 <!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="description" content={description} />
-<meta name="robots" content={robots} />
+<meta name="robots" content="index, follow" />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
