@@ -194,6 +194,9 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
 
 <script>
   // Initialize all contact forms on the page (supports multiple instances)
+  // NOTE: If View Transitions are enabled, this script will need to handle
+  // `astro:page-load` events to reinitialize forms after client-side navigation.
+  // See Header.astro for an example of View Transitions handling.
   document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
     const submitButton = form.querySelector('[data-submit-button]') as HTMLButtonElement;
     const buttonText = form.querySelector('[data-button-text]') as HTMLSpanElement;
@@ -342,6 +345,7 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
           throw new Error('Form submission failed');
         }
       } catch (error) {
+        console.error('Contact form submission failed:', error);
         errorMessage.classList.remove('hidden');
         errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       } finally {
