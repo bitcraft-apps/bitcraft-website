@@ -5,6 +5,8 @@ import Button from './Button.astro';
 ---
 
 <section
+  data-hero
+  data-animate-active="false"
   aria-labelledby="hero-headline"
   class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-off-white via-white to-off-white"
 >
@@ -126,6 +128,34 @@ import Button from './Button.astro';
     });
   }
 
+  function initHeroAnimations() {
+    const hero = document.querySelector('[data-hero]');
+    if (!hero || hero.getAttribute('data-animation-observer') === 'true') {
+      return;
+    }
+
+    hero.setAttribute('data-animation-observer', 'true');
+
+    if (!('IntersectionObserver' in window)) {
+      hero.setAttribute('data-animate-active', 'true');
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        hero.setAttribute('data-animate-active', entry?.isIntersecting ? 'true' : 'false');
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(hero);
+  }
+
   initScrollIndicator();
-  document.addEventListener('astro:page-load', initScrollIndicator);
+  initHeroAnimations();
+  document.addEventListener('astro:page-load', () => {
+    initScrollIndicator();
+    initHeroAnimations();
+  });
 </script>

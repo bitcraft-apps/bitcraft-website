@@ -173,3 +173,11 @@
     transform: none;
   }
 }
+
+/* Pause long-running decorative animations when hero is off-screen */
+[data-hero][data-animate-active='false'] .animate-float-slow,
+[data-hero][data-animate-active='false'] .animate-float-medium,
+[data-hero][data-animate-active='false'] .animate-float-reverse,
+[data-hero][data-animate-active='false'] .animate-pulse-slow {
+  animation-play-state: paused;
+}

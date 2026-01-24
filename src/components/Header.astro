@@ -137,30 +137,39 @@ const currentPath = Astro.url.pathname;
     const hamburgerIcon = button.querySelector('.hamburger-icon') as HTMLElement | null;
     const closeIcon = button.querySelector('.close-icon') as HTMLElement | null;
 
-    if (!hamburgerIcon || !closeIcon) return;
+    if (!hamburgerIcon || !closeIcon) {
+      return;
+    }
+
+    const refs = {
+      button,
+      menu,
+      hamburgerIcon,
+      closeIcon,
+    } as const;
 
     function openMenu() {
-      button!.setAttribute('aria-expanded', 'true');
-      button!.setAttribute('aria-label', 'Close main menu');
-      hamburgerIcon!.classList.add('hidden');
-      closeIcon!.classList.remove('hidden');
-      menu!.classList.remove('hidden');
+      refs.button.setAttribute('aria-expanded', 'true');
+      refs.button.setAttribute('aria-label', 'Close main menu');
+      refs.hamburgerIcon.classList.add('hidden');
+      refs.closeIcon.classList.remove('hidden');
+      refs.menu.classList.remove('hidden');
 
       // Focus first link for accessibility
-      const firstLink = menu!.querySelector('a');
+      const firstLink = refs.menu.querySelector('a');
       firstLink?.focus();
     }
 
     function closeMenu() {
-      button!.setAttribute('aria-expanded', 'false');
-      button!.setAttribute('aria-label', 'Open main menu');
-      hamburgerIcon!.classList.remove('hidden');
-      closeIcon!.classList.add('hidden');
-      menu!.classList.add('hidden');
+      refs.button.setAttribute('aria-expanded', 'false');
+      refs.button.setAttribute('aria-label', 'Open main menu');
+      refs.hamburgerIcon.classList.remove('hidden');
+      refs.closeIcon.classList.add('hidden');
+      refs.menu.classList.add('hidden');
     }
 
     function toggleMenu() {
-      const isExpanded = button!.getAttribute('aria-expanded') === 'true';
+      const isExpanded = refs.button.getAttribute('aria-expanded') === 'true';
       if (isExpanded) {
         closeMenu();
       } else {
@@ -169,25 +178,25 @@ const currentPath = Astro.url.pathname;
     }
 
     function handleEscapeKey(event: KeyboardEvent) {
-      if (event.key === 'Escape' && button?.getAttribute('aria-expanded') === 'true') {
+      if (event.key === 'Escape' && refs.button.getAttribute('aria-expanded') === 'true') {
         closeMenu();
-        button.focus();
+        refs.button.focus();
       }
     }
 
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as Node;
-      const header = button?.closest('header');
-      if (header && !header.contains(target) && button?.getAttribute('aria-expanded') === 'true') {
+      const header = refs.button.closest('header');
+      if (header && !header.contains(target) && refs.button.getAttribute('aria-expanded') === 'true') {
         closeMenu();
       }
     }
 
     // Toggle on button click
-    button.addEventListener('click', toggleMenu, { signal: controller.signal });
+    refs.button.addEventListener('click', toggleMenu, { signal: controller.signal });
 
     // Close menu when clicking a link using event delegation
-    menu.addEventListener('click', (event) => {
+    refs.menu.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
       if (target.closest('.mobile-nav-link')) {
         closeMenu();
