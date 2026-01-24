@@ -1,11 +1,20 @@
 export const SITE_TITLE = 'Bitcraft';
 export const SITE_DESCRIPTION = 'Bitcraft — web experiences and tools for Bitcraft and beyond.';
 
-/** Brand color used for theme-color meta tag and PWA manifest. */
+/** Brand color used for PWA manifest. */
 export const BRAND_COLOR = '#556B2F';
 
 /** Background color for PWA splash screen. */
 export const BACKGROUND_COLOR = '#FFFFFF';
+
+/**
+ * Theme colors for browser chrome (theme-color meta tag).
+ * Used by BaseHead.astro via define:vars for the inline theme init script.
+ */
+export const THEME_COLORS = {
+  light: '#f5f5f5',
+  dark: '#1a1a1a',
+} as const;
 
 /**
  * Default Open Graph image configuration.

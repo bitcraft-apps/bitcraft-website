@@ -37,10 +37,10 @@ const socialLinks: SocialLink[] = [
   <section aria-labelledby="contact-heading" class="py-8 sm:py-12">
     <!-- Page Header -->
     <div class="mb-10 sm:mb-12">
-      <h1 id="contact-heading" class="text-4xl sm:text-5xl font-bold text-dark-olive mb-4">
+      <h1 id="contact-heading" class="text-4xl sm:text-5xl font-bold text-dark-olive dark:text-off-white mb-4">
         Get in Touch
       </h1>
-      <p class="text-lg text-near-black/80 max-w-2xl">
+      <p class="text-lg text-near-black/80 dark:text-off-white/80 max-w-2xl">
         Have a project in mind or want to discuss how we can work together? Fill out the form below
         and I'll get back to you within 24-48 hours.
       </p>
@@ -50,7 +50,7 @@ const socialLinks: SocialLink[] = [
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
       <!-- Contact Form -->
       <div>
-        <h2 class="text-2xl font-semibold text-dark-olive mb-6">Send a Message</h2>
+        <h2 class="text-2xl font-semibold text-dark-olive dark:text-off-white mb-6">Send a Message</h2>
         <ContactForm />
       </div>
 
@@ -58,8 +58,8 @@ const socialLinks: SocialLink[] = [
       <div class="space-y-10">
         <!-- Connect Section -->
         <div>
-          <h2 class="text-2xl font-semibold text-dark-olive mb-6">Other Ways to Connect</h2>
-          <p class="text-near-black/80 mb-6">
+          <h2 class="text-2xl font-semibold text-dark-olive dark:text-off-white mb-6">Other Ways to Connect</h2>
+          <p class="text-near-black/80 dark:text-off-white/80 mb-6">
             Prefer a different way to reach out? You can also contact me through these channels:
           </p>
           <ul class="space-y-4">
@@ -70,7 +70,7 @@ const socialLinks: SocialLink[] = [
                     href={link.href}
                     target={link.icon === 'github' ? '_blank' : undefined}
                     rel={link.icon === 'github' ? 'noopener noreferrer' : undefined}
-                    class="inline-flex items-center text-dark-olive hover:text-forest-green transition-colors duration-200 group"
+                    class="inline-flex items-center text-dark-olive dark:text-off-white hover:text-forest-green transition-colors duration-200 group"
                   >
                     {link.icon === 'github' && (
                       <svg
@@ -111,8 +111,8 @@ const socialLinks: SocialLink[] = [
         </div>
 
         <!-- Response Time Note -->
-        <div class="p-6 bg-off-white rounded-lg border border-olive-drab/20">
-          <h3 class="text-lg font-semibold text-dark-olive mb-2 flex items-center">
+        <div class="p-6 bg-off-white dark:bg-white/5 rounded-lg border border-olive-drab/20 dark:border-olive-drab/30">
+          <h3 class="text-lg font-semibold text-dark-olive dark:text-off-white mb-2 flex items-center">
             <svg
               class="h-5 w-5 mr-2 text-forest-green"
               fill="none"
@@ -128,30 +128,30 @@ const socialLinks: SocialLink[] = [
             </svg>
             Response Time
           </h3>
-          <p class="text-near-black/70">
+          <p class="text-near-black/70 dark:text-off-white/70">
             I typically respond to inquiries within 24-48 hours during business days. For urgent
             matters, please mention it in your message.
           </p>
         </div>
 
         <!-- Legal Info Section -->
-        <div class="pt-6 border-t border-olive-drab/20">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-dark-olive/70 mb-3">
+        <div class="pt-6 border-t border-olive-drab/20 dark:border-olive-drab/30">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-dark-olive/70 dark:text-off-white/50 mb-3">
             Business Information
           </h3>
-          <dl class="space-y-2 text-sm text-near-black/70">
+          <dl class="space-y-2 text-sm text-near-black/70 dark:text-off-white/70">
             <div class="flex items-start">
-              <dt class="font-medium text-near-black min-w-[120px]">EU VAT ID:</dt>
+              <dt class="font-medium text-near-black dark:text-off-white min-w-[120px]">EU VAT ID:</dt>
               <dd class="font-mono">{LEGAL.taxId}</dd>
             </div>
             <div class="flex items-start">
-              <dt class="font-medium text-near-black min-w-[120px]">Registry:</dt>
+              <dt class="font-medium text-near-black dark:text-off-white min-w-[120px]">Registry:</dt>
               <dd>
                 <a
                   href={LEGAL.registryUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-dark-olive hover:text-forest-green underline transition-colors duration-200"
+                  class="text-dark-olive dark:text-forest-green hover:text-forest-green dark:hover:text-white underline transition-colors duration-200"
                 >
                   CEiDG (Polish Business Registry)
                 </a>

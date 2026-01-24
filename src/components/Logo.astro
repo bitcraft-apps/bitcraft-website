@@ -1,6 +1,13 @@
 ---
+/**
+ * Logo component with theme-aware variant support
+ * - 'default': Original color logo
+ * - 'mono-white': White logo for dark backgrounds
+ * - 'mono-black': Black logo for light backgrounds
+ * - 'auto': Uses mono-black with CSS invert filter in dark mode (single image, better LCP)
+ */
 interface Props {
-  variant?: 'default' | 'mono-white' | 'mono-black';
+  variant?: 'default' | 'mono-white' | 'mono-black' | 'auto';
   class?: string;
   width?: number;
   height?: number;
@@ -14,7 +21,14 @@ const logoMap = {
   'mono-black': '/images/bitcraft-logo-mono-black.svg',
 };
 
-const src = logoMap[variant];
+const isAuto = variant === 'auto';
+const src = isAuto ? logoMap['mono-black'] : logoMap[variant];
 ---
 
-<img src={src} alt="Bitcraft Logo" class={className} width={width} height={height} />
+<img
+  src={src}
+  alt="Bitcraft Logo"
+  class:list={[className, isAuto && 'dark:invert']}
+  width={width}
+  height={height}
+/>

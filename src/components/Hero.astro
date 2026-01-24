@@ -8,34 +8,34 @@ import Button from './Button.astro';
   data-hero
   data-animate-active="false"
   aria-labelledby="hero-headline"
-  class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-off-white via-white to-off-white"
+  class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-off-white via-white to-off-white dark:from-near-black dark:via-near-black dark:to-near-black"
 >
   <!-- Decorative background elements -->
   <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
     <!-- Floating code brackets - left side -->
     <div
-      class="absolute top-20 left-8 sm:left-16 lg:left-24 text-olive-drab/10 text-6xl sm:text-8xl font-mono animate-float-slow"
+      class="absolute top-20 left-8 sm:left-16 lg:left-24 text-olive-drab/10 dark:text-olive-drab/20 text-6xl sm:text-8xl font-mono animate-float-slow"
     >
       &lt;/&gt;
     </div>
 
     <!-- Floating curly braces - right side -->
     <div
-      class="absolute top-32 right-8 sm:right-20 lg:right-32 text-forest-green/10 text-5xl sm:text-7xl font-mono animate-float-medium"
+      class="absolute top-32 right-8 sm:right-20 lg:right-32 text-forest-green/10 dark:text-forest-green/20 text-5xl sm:text-7xl font-mono animate-float-medium"
     >
       {}
     </div>
 
     <!-- Terminal prompt - bottom left -->
     <div
-      class="absolute bottom-32 left-12 sm:left-24 text-dark-olive/10 text-4xl sm:text-6xl font-mono animate-float-reverse"
+      class="absolute bottom-32 left-12 sm:left-24 text-dark-olive/10 dark:text-dark-olive/20 text-4xl sm:text-6xl font-mono animate-float-reverse"
     >
       $&gt;_
     </div>
 
     <!-- Code snippet decoration - top right -->
     <div
-      class="absolute top-16 right-1/4 hidden lg:block text-olive-drab/10 font-mono text-sm animate-fade-in-slow"
+      class="absolute top-16 right-1/4 hidden lg:block text-olive-drab/10 dark:text-olive-drab/20 font-mono text-sm animate-fade-in-slow"
     >
       <pre class="leading-relaxed">const craft = () =&gt; &#123;
   return quality;
@@ -44,17 +44,17 @@ import Button from './Button.astro';
 
     <!-- Grid pattern overlay -->
     <div
-      class="absolute inset-0 bg-[linear-gradient(rgba(107,142,35,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(107,142,35,0.03)_1px,transparent_1px)] bg-[size:60px_60px]"
+      class="absolute inset-0 bg-[linear-gradient(rgba(107,142,35,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(107,142,35,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(107,142,35,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(107,142,35,0.08)_1px,transparent_1px)] bg-[size:60px_60px]"
     >
     </div>
 
     <!-- Gradient orbs -->
     <div
-      class="absolute top-1/4 -left-32 w-64 h-64 bg-forest-green/5 rounded-full blur-3xl animate-pulse-slow"
+      class="absolute top-1/4 -left-32 w-64 h-64 bg-forest-green/5 dark:bg-forest-green/10 rounded-full blur-3xl animate-pulse-slow"
     >
     </div>
     <div
-      class="absolute bottom-1/4 -right-32 w-80 h-80 bg-olive-drab/5 rounded-full blur-3xl animate-pulse-slow animation-delay-2000"
+      class="absolute bottom-1/4 -right-32 w-80 h-80 bg-olive-drab/5 dark:bg-olive-drab/10 rounded-full blur-3xl animate-pulse-slow animation-delay-2000"
     >
     </div>
   </div>
@@ -63,7 +63,7 @@ import Button from './Button.astro';
   <div class="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 animate-fade-in-up">
     <!-- Pre-headline badge -->
     <div
-      class="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-forest-green/10 border border-forest-green/20 rounded-full text-forest-green text-sm font-medium animate-fade-in animation-delay-200"
+      class="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-forest-green/10 border border-forest-green/20 rounded-full text-forest-green dark:text-forest-green text-sm font-medium animate-fade-in animation-delay-200"
     >
       <span class="w-2 h-2 bg-forest-green rounded-full animate-pulse"></span>
       Software Studio
@@ -72,7 +72,7 @@ import Button from './Button.astro';
     <!-- Headline -->
     <h1
       id="hero-headline"
-      class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-dark-olive mb-6 tracking-tight"
+      class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-dark-olive dark:text-off-white mb-6 tracking-tight"
     >
       <span class="inline-block animate-fade-in-up animation-delay-300">Code.</span>
       <span class="inline-block animate-fade-in-up animation-delay-500">Craft.</span>
@@ -81,7 +81,7 @@ import Button from './Button.astro';
 
     <!-- Description -->
     <p
-      class="text-lg sm:text-xl md:text-2xl text-near-black/80 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up animation-delay-900"
+      class="text-lg sm:text-xl md:text-2xl text-near-black/80 dark:text-off-white/80 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up animation-delay-900"
     >
       We build thoughtful web experiences and tools that blend technical precision with creative
       craft.
@@ -103,7 +103,7 @@ import Button from './Button.astro';
   <!-- Scroll indicator -->
   <button
     type="button"
-    class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce-slow flex flex-col items-center gap-2 text-olive-drab/50 hover:text-olive-drab transition-colors cursor-pointer bg-transparent border-none"
+    class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce-slow flex flex-col items-center gap-2 text-olive-drab/50 dark:text-olive-drab/70 hover:text-olive-drab dark:hover:text-olive-drab transition-colors cursor-pointer bg-transparent border-none"
     id="scroll-indicator"
   >
     <span class="text-xs font-medium tracking-wider uppercase">Scroll</span>

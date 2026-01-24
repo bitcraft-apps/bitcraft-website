@@ -1,5 +1,5 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION, CONTACT, DEFAULT_OG_IMAGE, LOGO_IMAGE, BRAND_COLOR, getSiteUrl } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION, CONTACT, DEFAULT_OG_IMAGE, LOGO_IMAGE, THEME_COLORS, getSiteUrl } from '../consts';
 
 interface Props {
   title: string;
@@ -50,12 +50,31 @@ const jsonLd = {
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width" />
+<meta name="theme-color" content={THEME_COLORS.light} />
+
+<!-- Theme initialization - must run before page renders to prevent flash -->
+<script is:inline define:vars={{ themeLight: THEME_COLORS.light, themeDark: THEME_COLORS.dark }}>
+(function() {
+  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var theme;
+  try {
+    theme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+  } catch (e) {
+    theme = prefersDark ? 'dark' : 'light';
+  }
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+  document.documentElement.style.colorScheme = theme;
+  // Update theme-color meta tag to match initial theme
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', theme === 'dark' ? themeDark : themeLight);
+})();
+</script>
+
 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
-<meta name="theme-color" content={BRAND_COLOR} />
 <meta name="generator" content={Astro.generator} />
 
 <!-- Canonical URL -->
