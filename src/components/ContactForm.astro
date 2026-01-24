@@ -193,164 +193,186 @@ const uniqueId = `cf-${Math.random().toString(36).slice(2, 9)}`;
 </form>
 
 <script>
-  // Initialize all contact forms on the page (supports multiple instances)
-  // NOTE: If View Transitions are enabled, this script will need to handle
-  // `astro:page-load` events to reinitialize forms after client-side navigation.
-  // See Header.astro for an example of View Transitions handling.
-  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
-    const submitButton = form.querySelector('[data-submit-button]') as HTMLButtonElement;
-    const buttonText = form.querySelector('[data-button-text]') as HTMLSpanElement;
-    const buttonLoading = form.querySelector('[data-button-loading]') as HTMLSpanElement;
-    const successMessage = form.querySelector('[data-success-message]') as HTMLDivElement;
-    const errorMessage = form.querySelector('[data-error-message]') as HTMLDivElement;
+  // Track initialized forms to prevent duplicate event listeners
+  const initializedForms: WeakSet<HTMLFormElement> = new WeakSet();
 
-    // Field elements
-    const nameInput = form.querySelector('[data-field="name"]') as HTMLInputElement;
-    const emailInput = form.querySelector('[data-field="email"]') as HTMLInputElement;
-    const messageInput = form.querySelector('[data-field="message"]') as HTMLTextAreaElement;
+  function initContactForms() {
+    document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
+      // Prevent duplicate initialization on the same form element
+      if (initializedForms.has(form)) return;
+      initializedForms.add(form);
 
-    // Error elements
-    const nameError = form.querySelector('[data-error="name"]') as HTMLParagraphElement;
-    const emailError = form.querySelector('[data-error="email"]') as HTMLParagraphElement;
-    const messageError = form.querySelector('[data-error="message"]') as HTMLParagraphElement;
+      const submitButton = form.querySelector('[data-submit-button]') as HTMLButtonElement;
+      const buttonText = form.querySelector('[data-button-text]') as HTMLSpanElement;
+      const buttonLoading = form.querySelector('[data-button-loading]') as HTMLSpanElement;
+      const successMessage = form.querySelector('[data-success-message]') as HTMLDivElement;
+      const errorMessage = form.querySelector('[data-error-message]') as HTMLDivElement;
 
-    /**
-     * Clear validation state for a single field
-     */
-    function clearFieldValidation(
-      input: HTMLInputElement | HTMLTextAreaElement,
-      errorEl: HTMLParagraphElement,
-    ): void {
-      errorEl.classList.add('hidden');
-      errorEl.textContent = '';
-      input.classList.remove('border-red-500');
-      input.removeAttribute('aria-invalid');
-    }
+      // Field elements
+      const nameInput = form.querySelector('[data-field="name"]') as HTMLInputElement;
+      const emailInput = form.querySelector('[data-field="email"]') as HTMLInputElement;
+      const messageInput = form.querySelector('[data-field="message"]') as HTMLTextAreaElement;
 
-    /**
-     * Clear validation state for all fields
-     */
-    function clearAllValidation(): void {
-      clearFieldValidation(nameInput, nameError);
-      clearFieldValidation(emailInput, emailError);
-      clearFieldValidation(messageInput, messageError);
-    }
+      // Error elements
+      const nameError = form.querySelector('[data-error="name"]') as HTMLParagraphElement;
+      const emailError = form.querySelector('[data-error="email"]') as HTMLParagraphElement;
+      const messageError = form.querySelector('[data-error="message"]') as HTMLParagraphElement;
 
-    /**
-     * Validate a single field and show/hide error message
-     */
-    function validateField(
-      input: HTMLInputElement | HTMLTextAreaElement,
-      errorEl: HTMLParagraphElement,
-    ): boolean {
-      const trimmedValue = input.value.trim();
-      let errorText = '';
-
-      if (!trimmedValue) {
-        errorText = 'This field is required';
-      } else if (
-        input instanceof HTMLInputElement &&
-        input.type === 'email' &&
-        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedValue)
-      ) {
-        errorText = 'Please enter a valid email address';
-      }
-
-      if (errorText) {
-        errorEl.textContent = errorText;
-        errorEl.classList.remove('hidden');
-        input.classList.add('border-red-500');
-        input.setAttribute('aria-invalid', 'true');
-        return false;
-      } else {
+      /**
+       * Clear validation state for a single field
+       */
+      function clearFieldValidation(
+        input: HTMLInputElement | HTMLTextAreaElement,
+        errorEl: HTMLParagraphElement,
+      ): void {
         errorEl.classList.add('hidden');
+        errorEl.textContent = '';
         input.classList.remove('border-red-500');
         input.removeAttribute('aria-invalid');
-        return true;
       }
-    }
 
-    /**
-     * Validate all fields
-     */
-    function validateForm(): boolean {
-      const isNameValid = validateField(nameInput, nameError);
-      const isEmailValid = validateField(emailInput, emailError);
-      const isMessageValid = validateField(messageInput, messageError);
-      return isNameValid && isEmailValid && isMessageValid;
-    }
+      /**
+       * Clear validation state for all fields
+       */
+      function clearAllValidation(): void {
+        clearFieldValidation(nameInput, nameError);
+        clearFieldValidation(emailInput, emailError);
+        clearFieldValidation(messageInput, messageError);
+      }
 
-    /**
-     * Set loading state
-     */
-    function setLoading(loading: boolean): void {
-      submitButton.disabled = loading;
-      buttonText.classList.toggle('hidden', loading);
-      buttonLoading.classList.toggle('hidden', !loading);
-    }
+      /**
+       * Validate a single field and show/hide error message
+       */
+      function validateField(
+        input: HTMLInputElement | HTMLTextAreaElement,
+        errorEl: HTMLParagraphElement,
+      ): boolean {
+        const trimmedValue = input.value.trim();
+        let errorText = '';
 
-    /**
-     * Reset form state and hide messages
-     */
-    function resetFormState(): void {
-      successMessage.classList.add('hidden');
-      errorMessage.classList.add('hidden');
-    }
+        if (!trimmedValue) {
+          errorText = 'This field is required';
+        } else if (
+          input instanceof HTMLInputElement &&
+          input.type === 'email' &&
+          !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedValue)
+        ) {
+          errorText = 'Please enter a valid email address';
+        }
 
-    // Add blur validation to each field
-    [
-      { input: nameInput, error: nameError },
-      { input: emailInput, error: emailError },
-      { input: messageInput, error: messageError },
-    ].forEach(({ input, error }) => {
-      input.addEventListener('blur', () => validateField(input, error));
-      input.addEventListener('input', () => {
-        if (input.getAttribute('aria-invalid')) {
-          validateField(input, error);
+        if (errorText) {
+          errorEl.textContent = errorText;
+          errorEl.classList.remove('hidden');
+          input.classList.add('border-red-500');
+          input.setAttribute('aria-invalid', 'true');
+          return false;
+        } else {
+          errorEl.classList.add('hidden');
+          input.classList.remove('border-red-500');
+          input.removeAttribute('aria-invalid');
+          return true;
+        }
+      }
+
+      /**
+       * Validate all fields
+       */
+      function validateForm(): boolean {
+        const isNameValid = validateField(nameInput, nameError);
+        const isEmailValid = validateField(emailInput, emailError);
+        const isMessageValid = validateField(messageInput, messageError);
+        return isNameValid && isEmailValid && isMessageValid;
+      }
+
+      /**
+       * Set loading state
+       */
+      function setLoading(loading: boolean): void {
+        submitButton.disabled = loading;
+        buttonText.classList.toggle('hidden', loading);
+        buttonLoading.classList.toggle('hidden', !loading);
+      }
+
+      /**
+       * Reset form state and hide messages
+       */
+      function resetFormState(): void {
+        successMessage.classList.add('hidden');
+        errorMessage.classList.add('hidden');
+      }
+
+      /**
+       * Create FormData with trimmed values
+       */
+      function createTrimmedFormData(): FormData {
+        const formData = new FormData();
+        formData.append('name', nameInput.value.trim());
+        formData.append('email', emailInput.value.trim());
+        formData.append('message', messageInput.value.trim());
+        return formData;
+      }
+
+      // Add blur validation to each field
+      [
+        { input: nameInput, error: nameError },
+        { input: emailInput, error: emailError },
+        { input: messageInput, error: messageError },
+      ].forEach(({ input, error }) => {
+        input.addEventListener('blur', () => validateField(input, error));
+        input.addEventListener('input', () => {
+          if (input.getAttribute('aria-invalid')) {
+            validateField(input, error);
+          }
+        });
+      });
+
+      // Form submission handler
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        resetFormState();
+
+        if (!validateForm()) {
+          // Focus first invalid field
+          const firstInvalid = form.querySelector('[aria-invalid="true"]') as HTMLElement;
+          firstInvalid?.focus();
+          return;
+        }
+
+        setLoading(true);
+
+        try {
+          const formData = createTrimmedFormData();
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              Accept: 'application/json',
+            },
+          });
+
+          if (response.ok) {
+            successMessage.classList.remove('hidden');
+            form.reset();
+            clearAllValidation();
+            // Scroll success message into view
+            successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          } else {
+            throw new Error('Form submission failed');
+          }
+        } catch (error) {
+          console.error('Contact form submission failed:', error);
+          errorMessage.classList.remove('hidden');
+          errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } finally {
+          setLoading(false);
         }
       });
     });
+  }
 
-    // Form submission handler
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      resetFormState();
+  // Initialize immediately for standard page loads (without View Transitions)
+  initContactForms();
 
-      if (!validateForm()) {
-        // Focus first invalid field
-        const firstInvalid = form.querySelector('[aria-invalid="true"]') as HTMLElement;
-        firstInvalid?.focus();
-        return;
-      }
-
-      setLoading(true);
-
-      try {
-        const formData = new FormData(form);
-        const response = await fetch(form.action, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            Accept: 'application/json',
-          },
-        });
-
-        if (response.ok) {
-          successMessage.classList.remove('hidden');
-          form.reset();
-          clearAllValidation();
-          // Scroll success message into view
-          successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        } else {
-          throw new Error('Form submission failed');
-        }
-      } catch (error) {
-        console.error('Contact form submission failed:', error);
-        errorMessage.classList.remove('hidden');
-        errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      } finally {
-        setLoading(false);
-      }
-    });
-  });
+  // Re-initialize on View Transitions navigation (when enabled)
+  document.addEventListener('astro:page-load', initContactForms);
 </script>
