@@ -12,7 +12,7 @@ import Icon from './Icon.astro';
   id="theme-toggle"
   type="button"
   class="p-2 rounded-md text-near-black dark:text-off-white hover:text-dark-olive dark:hover:text-white hover:bg-off-white dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-dark-olive dark:focus:ring-off-white transition-colors duration-200"
-  aria-label="Toggle dark mode"
+  aria-label="Switch to dark mode"
 >
   <!-- Sun icon - shown in dark mode (click to switch to light) -->
   <span class="hidden dark:block">
@@ -41,10 +41,27 @@ import Icon from './Icon.astro';
     const controller = new AbortController();
     window.__themeController = controller;
 
+    function updateAriaLabel(theme: 'light' | 'dark') {
+      button!.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+
+    function updateThemeColorMeta(theme: 'light' | 'dark') {
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) {
+        meta.setAttribute('content', theme === 'dark' ? '#1a1a1a' : '#f5f5f5');
+      }
+    }
+
     function setTheme(theme: 'light' | 'dark') {
       document.documentElement.classList.toggle('dark', theme === 'dark');
       document.documentElement.style.colorScheme = theme;
-      localStorage.setItem('theme', theme);
+      updateAriaLabel(theme);
+      updateThemeColorMeta(theme);
+      try {
+        localStorage.setItem('theme', theme);
+      } catch {
+        // localStorage unavailable - theme still works, just won't persist
+      }
     }
 
     function toggleTheme() {
@@ -53,21 +70,27 @@ import Icon from './Icon.astro';
       setTheme(next);
     }
 
+    // Set initial aria-label based on current theme
+    const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    updateAriaLabel(currentTheme);
+
     button.addEventListener('click', toggleTheme, { signal: controller.signal });
 
     // Listen for system preference changes (only if user hasn't set a preference)
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     mediaQuery.addEventListener('change', (e) => {
       // Only update if user hasn't explicitly set a preference
-      if (!localStorage.getItem('theme')) {
+      try {
+        if (!localStorage.getItem('theme')) {
+          setTheme(e.matches ? 'dark' : 'light');
+        }
+      } catch {
+        // localStorage unavailable - use system preference
         setTheme(e.matches ? 'dark' : 'light');
       }
     }, { signal: controller.signal });
   }
 
-  // Initialize immediately for standard page loads
-  initThemeToggle();
-
-  // Re-initialize on View Transitions navigation
+  // Use astro:page-load which fires on initial load and View Transitions navigation
   document.addEventListener('astro:page-load', initThemeToggle);
 </script>
