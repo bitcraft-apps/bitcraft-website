@@ -29,7 +29,7 @@ const jsonLd = {
       url: siteUrl,
       logo: new URL(LOGO_IMAGE, siteUrl).href,
       // Add additional social profiles (LinkedIn, Twitter/X, etc.) here as they become available
-      sameAs: [CONTACT.github],
+      sameAs: [CONTACT.github].filter(Boolean),
     },
     {
       '@type': 'WebSite',

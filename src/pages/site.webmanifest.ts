@@ -5,6 +5,8 @@ export const GET: APIRoute = () => {
   const manifest = {
     name: SITE_TITLE,
     short_name: SITE_TITLE,
+    start_url: '/',
+    scope: '/',
     icons: [
       {
         src: '/android-chrome-192x192.png',
@@ -28,7 +30,12 @@ export const GET: APIRoute = () => {
     display: 'standalone',
   };
 
-  return new Response(JSON.stringify(manifest, null, 2), {
+  // Format JSON for readability in dev, minify in production
+  const jsonOutput = import.meta.env.DEV
+    ? JSON.stringify(manifest, null, 2)
+    : JSON.stringify(manifest);
+
+  return new Response(jsonOutput, {
     headers: {
       'Content-Type': 'application/manifest+json',
       'Cache-Control': 'public, max-age=86400', // 24 hours

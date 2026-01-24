@@ -26,7 +26,13 @@ export const DEFAULT_OG_IMAGE = {
  * Get the site URL with fallback for local development.
  * Uses Astro's SITE env variable from astro.config.mjs.
  */
-export const getSiteUrl = (): string => import.meta.env.SITE || 'http://localhost:4321';
+export const getSiteUrl = (): string => {
+  const site = import.meta.env.SITE;
+  if (!site && import.meta.env.DEV) {
+    console.warn('[SEO] SITE URL not configured in astro.config.mjs, using localhost fallback');
+  }
+  return site || 'http://localhost:4321';
+};
 
 /**
  * Logo image for JSON-LD structured data (relative to site root).
