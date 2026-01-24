@@ -1,6 +1,7 @@
 ---
 // Hero component - dynamic landing section with code/tech motifs and animations
 import Icon from './Icon.astro';
+import Button from './Button.astro';
 ---
 
 <section
@@ -88,20 +89,12 @@ import Icon from './Icon.astro';
     <div
       class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animation-delay-1100"
     >
-      <a
-        href="/projects"
-        class="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-forest-green text-white font-semibold rounded-lg hover:bg-dark-olive hover:shadow-lg hover:shadow-forest-green/20 transform hover:-translate-y-0.5 transition-all duration-300"
-      >
+      <Button href="/projects" variant="primary" icon="arrow-right">
         View Projects
-        <Icon name="arrow-right" size="sm" class="group-hover:translate-x-1 transition-transform duration-300" />
-      </a>
-      <a
-        href="/contact"
-        class="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-white border-2 border-dark-olive text-dark-olive font-semibold rounded-lg hover:bg-dark-olive hover:text-white hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
-      >
+      </Button>
+      <Button href="/contact" variant="secondary" icon="envelope" iconAnimation="rotate">
         Get in Touch
-        <Icon name="envelope" size="sm" class="group-hover:rotate-12 transition-transform duration-300" />
-      </a>
+      </Button>
     </div>
   </div>
 
@@ -109,11 +102,10 @@ import Icon from './Icon.astro';
   <button
     type="button"
     class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce-slow flex flex-col items-center gap-2 text-olive-drab/50 hover:text-olive-drab transition-colors cursor-pointer bg-transparent border-none"
-    aria-label="Scroll to content"
     id="scroll-indicator"
   >
     <span class="text-xs font-medium tracking-wider uppercase">Scroll</span>
-    <Icon name="arrow-down" size="sm" />
+    <Icon name="arrow-down" size="sm" aria-hidden="true" />
   </button>
 </section>
 
@@ -124,7 +116,13 @@ import Icon from './Icon.astro';
     button.dataset.initialized = 'true';
 
     button.addEventListener('click', () => {
-      window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+      const heroSection = button.closest('section');
+      if (heroSection) {
+        const nextSection = heroSection.nextElementSibling;
+        if (nextSection) {
+          nextSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
     });
   }
 

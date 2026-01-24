@@ -30,7 +30,7 @@ export const FOUNDER = {
   initials:
     FOUNDER_NAME.split(/[\s-]+/)
       .filter((n) => n.length > 0)
-      .map((n) => n[0])
+      .map((n) => n[0].toUpperCase())
       .join('') || '?',
   role: 'Founder & Lead Engineer',
   quote:

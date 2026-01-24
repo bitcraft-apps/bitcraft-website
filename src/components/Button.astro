@@ -1,0 +1,54 @@
+---
+/**
+ * Button component - reusable button/link with consistent styling
+ * Supports primary and secondary variants with hover effects
+ */
+import Icon, { type IconName } from './Icon.astro';
+
+interface Props {
+  /** URL for link buttons, omit for regular buttons */
+  href?: string;
+  /** Visual variant */
+  variant?: 'primary' | 'secondary';
+  /** Optional icon to display after text */
+  icon?: IconName;
+  /** Icon hover animation */
+  iconAnimation?: 'translate-x' | 'rotate' | 'none';
+  /** Additional CSS classes */
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  icon,
+  iconAnimation = 'translate-x',
+  class: className = '',
+} = Astro.props;
+
+const baseClasses =
+  'group inline-flex items-center justify-center gap-2 px-8 py-4 font-semibold rounded-lg transform hover:-translate-y-0.5 transition-all duration-300';
+
+const variantClasses = {
+  primary:
+    'bg-forest-green text-white hover:bg-dark-olive hover:shadow-lg hover:shadow-forest-green/20',
+  secondary:
+    'bg-white border-2 border-dark-olive text-dark-olive hover:bg-dark-olive hover:text-white hover:shadow-lg',
+};
+
+const iconAnimationClasses = {
+  'translate-x': 'group-hover:translate-x-1',
+  rotate: 'group-hover:rotate-12',
+  none: '',
+};
+
+const classes = [baseClasses, variantClasses[variant], className].join(' ');
+const iconClasses = `transition-transform duration-300 ${iconAnimationClasses[iconAnimation]}`;
+
+const Element = href ? 'a' : 'button';
+---
+
+<Element href={href} class={classes} {...href ? {} : { type: 'button' }}>
+  <slot />
+  {icon && <Icon name={icon} size="sm" class={iconClasses} aria-hidden="true" />}
+</Element>

@@ -5,6 +5,7 @@
  */
 import { CONTACT } from '../consts';
 import Icon from './Icon.astro';
+import Button from './Button.astro';
 ---
 
 <section
@@ -51,13 +52,9 @@ import Icon from './Icon.astro';
         </p>
 
         <!-- CTA Button -->
-        <a
-          href="/contact"
-          class="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-forest-green text-white font-semibold rounded-lg hover:bg-dark-olive hover:shadow-lg hover:shadow-forest-green/20 transform hover:-translate-y-0.5 transition-all duration-300"
-        >
+        <Button href="/contact" variant="primary" icon="arrow-right">
           Start a Conversation
-          <Icon name="arrow-right" size="sm" class="group-hover:translate-x-1 transition-transform" />
-        </a>
+        </Button>
 
         <!-- Secondary contact option -->
         <p class="mt-6 text-sm text-olive-drab">
