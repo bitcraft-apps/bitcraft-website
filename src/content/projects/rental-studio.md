@@ -1,7 +1,7 @@
 ---
 title: Rental Studio
 description: Property management and renovation planning platform for landlords with interactive floor plans.
-pubDate: 2026-01-24
+pubDate: 2025-01-24
 repository: https://github.com/bitcraft-apps/rental-studio
 tags:
   - Bun

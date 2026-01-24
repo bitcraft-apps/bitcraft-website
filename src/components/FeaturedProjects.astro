@@ -41,9 +41,10 @@ const featuredProjects = projects
         </a>
       </div>
 
+      {/* Priority loading for first 3 projects (first row on desktop) for LCP optimization */}
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
         {featuredProjects.map((project, index) => (
-          <ProjectCard project={project} featured={true} priority={index === 0} />
+          <ProjectCard project={project} featured={true} priority={index < 3} />
         ))}
       </div>
     </section>
