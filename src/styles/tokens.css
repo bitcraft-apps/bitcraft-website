@@ -1,12 +1,12 @@
 :root {
   /* Brand primitives */
-  --bitcraft-color-dark-olive: #556b2f;
-  --bitcraft-color-olive-drab: #6b8e23;
-  --bitcraft-color-forest-green: #228b22;
+  --bitcraft-color-dark-olive: #556B2F;
+  --bitcraft-color-olive-drab: #6B8E23;
+  --bitcraft-color-forest-green: #228B22;
 
-  --bitcraft-color-neutral-near-black: #1a1a1a;
-  --bitcraft-color-neutral-off-white: #f5f5f5;
-  --bitcraft-color-neutral-white: #ffffff;
+  --bitcraft-color-neutral-near-black: #1A1A1A;
+  --bitcraft-color-neutral-off-white: #F5F5F5;
+  --bitcraft-color-neutral-white: #FFFFFF;
 
   --bitcraft-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --bitcraft-font-mono: 'JetBrains Mono', monospace;
@@ -44,18 +44,4 @@
   --text-body-weight: var(--bitcraft-text-body-weight);
   --text-small-size: var(--bitcraft-text-small-size);
   --text-small-weight: var(--bitcraft-text-small-weight);
-
-  /* Animation timing */
-  --bitcraft-animation-duration-fast: 0.3s;
-  --bitcraft-animation-duration-normal: 0.6s;
-  --bitcraft-animation-duration-slow: 2s;
-  --bitcraft-animation-duration-float-slow: 8s;
-  --bitcraft-animation-duration-float-medium: 6s;
-  --bitcraft-animation-duration-float-fast: 7s;
-  --bitcraft-animation-duration-pulse: 8s;
-  --bitcraft-animation-duration-bounce: 2s;
-
-  /* Animation easing */
-  --bitcraft-animation-ease-default: ease-in-out;
-  --bitcraft-animation-ease-out: ease-out;
 }
