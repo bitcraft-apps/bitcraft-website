@@ -79,43 +79,50 @@ jobs:
           ZIP_FILE="${ZIP_FILES[0]}"
           echo "Downloaded: $ZIP_FILE"
 
-          # Prepare destination
-          rm -rf public/brand
-          mkdir -p public/brand
-
-          # Unzip to a temporary directory
+          # Unzip to a staging directory (avoid copying to repo root for security)
           unzip -o "$ZIP_FILE" -d temp-unzip
+          STAGING="temp-unzip/bundle"
 
-          # The bundle structure is:
+          # Expected bundle structure:
           # bundle/
           #   favicon-16x16.png, favicon-32x32.png, ... (standard files)
           #   brand/
           #     bitcraft-og.png
           #     tokens.css
-          #     logo/ (future: logo SVGs)
-
-          # Move contents of 'bundle' directory to repo root (temporary)
-          cp -R temp-unzip/bundle/* .
+          #     logo/ (optional - see bitcraft-brand#32)
 
           # 1. Move standard web assets to public/ root
-          find . -maxdepth 1 -type f \( -name "favicon*" -o -name "android-chrome*" -o -name "apple-touch-icon.png" -o -name "site.webmanifest" \) -exec mv -f {} public/ \;
+          find "$STAGING" -maxdepth 1 -type f \( -name "favicon*" -o -name "android-chrome*" -o -name "apple-touch-icon.png" -o -name "site.webmanifest" \) -exec mv -f {} public/ \;
 
           # 2. Handle brand/ subdirectory
-          if [ -d "brand" ]; then
-             mkdir -p public/brand src/styles
+          if [ -d "$STAGING/brand" ]; then
+             mkdir -p src/styles
 
              # Move tokens.css to src/styles/
-             if [ -f "brand/tokens.css" ]; then
-                mv -f brand/tokens.css src/styles/
+             if [ -f "$STAGING/brand/tokens.css" ]; then
+                mv -f "$STAGING/brand/tokens.css" src/styles/
+                rm -f "$STAGING/brand/tokens.css"
              fi
 
-             # Copy remaining brand assets to public/brand/
-             cp -R brand/* public/brand/
-             rm -rf brand
+             # Preserve local logo/ directory if bundle doesn't provide one
+             # (logos are manually managed until upstream bitcraft-brand#32 is resolved)
+             if [ -d "public/brand/logo" ] && [ ! -d "$STAGING/brand/logo" ]; then
+                mv public/brand/logo temp-logo-backup
+             fi
+
+             # Replace public/brand with bundle contents
+             rm -rf public/brand
+             mkdir -p public/brand
+             cp -R "$STAGING/brand/"* public/brand/ 2>/dev/null || true
+
+             # Restore logo directory if we backed it up
+             if [ -d "temp-logo-backup" ]; then
+                mv temp-logo-backup public/brand/logo
+             fi
           fi
 
           # Clean up temp directories
-          rm -rf temp-download temp-unzip
+          rm -rf temp-download temp-unzip temp-logo-backup
 
           # Update the local version file
           jq --arg v "$VERSION" '.version = $v' src/data/brand-version.json > temp.json && mv temp.json src/data/brand-version.json
