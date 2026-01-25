@@ -8,6 +8,8 @@ on:
 
 concurrency:
   group: sync-brand
+  # Queue new runs instead of cancelling - ensures no sync is dropped if triggered
+  # multiple times (e.g., manual dispatch during scheduled run)
   cancel-in-progress: false
 
 jobs:
@@ -64,7 +66,9 @@ jobs:
           set -euo pipefail
 
           # Ensure cleanup on exit (success or failure)
-          # TEMP_VERSION_FILE is set later; declared here so trap can reference it
+          # TEMP_VERSION_FILE initialized empty; set via mktemp at line ~179.
+          # Trap evaluates variable at execution time, so cleanup works correctly.
+          # Empty string in rm -rf is safe (no-op).
           TEMP_VERSION_FILE=""
           trap 'rm -rf temp-download temp-unzip temp-logo-backup "$TEMP_VERSION_FILE"' EXIT
 
@@ -115,9 +119,15 @@ jobs:
           #     tokens.css
           #     bitcraft-logo*.svg (optional - see bitcraft-brand#32)
 
-          # 1. Move standard web assets to public/ root
+          # 1. Move standard web assets to public/ root (using nullglob+array for consistent error handling)
           mkdir -p public
-          find "$STAGING" -maxdepth 1 -type f \( -name "favicon*" -o -name "android-chrome*" -o -name "apple-touch-icon.png" -o -name "site.webmanifest" \) -exec mv -f {} public/ \;
+          shopt -s nullglob
+          WEB_ASSETS=("$STAGING"/favicon* "$STAGING"/android-chrome* "$STAGING"/apple-touch-icon.png "$STAGING"/site.webmanifest)
+          shopt -u nullglob
+
+          if [ "${#WEB_ASSETS[@]}" -gt 0 ]; then
+             mv -f "${WEB_ASSETS[@]}" public/
+          fi
 
           # 2. Handle brand/ subdirectory
           if [ -d "$STAGING/brand" ]; then

@@ -15,4 +15,4 @@ This directory is **automatically managed** by the [sync-brand workflow](../../.
 If you need to add brand assets that aren't in the upstream bundle:
 
 1. Add them to the `bitcraft-brand` repository instead
-2. Or place them in a different directory (e.g., `public/images/`)
+2. Or place them in a different directory (e.g., `public/images/` for static assets not managed by the sync)
