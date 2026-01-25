@@ -55,50 +55,47 @@ jobs:
         run: |
           echo "Downloading assets for version $VERSION..."
 
-          # Download the specific asset 'brand-bundle.zip' from the release
+          # Download the bundle zip from the release
           gh release download "$VERSION" \
             --repo bitcraft-apps/bitcraft-brand \
             --pattern "*brand-bundle*.zip" \
             --dir temp-download
 
+          # Find the downloaded zip file
+          ZIP_FILE=$(ls temp-download/*.zip)
+          echo "Downloaded: $ZIP_FILE"
+
           # Prepare destination
           rm -rf public/brand
           mkdir -p public/brand
 
-          # Unzip to a temporary directory first
+          # Unzip to a temporary directory
           unzip -o "$ZIP_FILE" -d temp-unzip
 
           # The bundle structure is:
           # bundle/
-          #   favicon-16x16.png
-          #   favicon-32x32.png
-          #   ... (standard files)
+          #   favicon-16x16.png, favicon-32x32.png, ... (standard files)
           #   brand/
           #     bitcraft-og.png
           #     tokens.css
-          #     ... (brand files)
+          #     logo/ (future: logo SVGs)
 
-          # Move contents of the 'bundle' directory to temporary holding
+          # Move contents of 'bundle' directory to repo root (temporary)
           cp -R temp-unzip/bundle/* .
 
           # 1. Move standard web assets to public/ root
-          # We use a glob that matches the standard files we expect
-          # - favicons, android-chrome, apple-touch-icon, site.webmanifest
           find . -maxdepth 1 -type f \( -name "favicon*" -o -name "android-chrome*" -o -name "apple-touch-icon.png" -o -name "site.webmanifest" \) -exec mv -f {} public/ \;
 
-          # 2. Move the 'brand' subdirectory contents
-          # We now split this:
-          # - tokens.css goes to src/styles/
-          # - other brand assets (images, etc.) go to public/brand/
+          # 2. Handle brand/ subdirectory
           if [ -d "brand" ]; then
              mkdir -p public/brand src/styles
-             
-             # Move tokens.css if it exists
+
+             # Move tokens.css to src/styles/
              if [ -f "brand/tokens.css" ]; then
                 mv -f brand/tokens.css src/styles/
              fi
 
-             # Copy remaining contents of brand/ to public/brand/
+             # Copy remaining brand assets to public/brand/
              cp -R brand/* public/brand/
              rm -rf brand
           fi
@@ -107,7 +104,6 @@ jobs:
           rm -rf temp-download temp-unzip
 
           # Update the local version file
-          # We use a temp file to safely write JSON
           jq --arg v "$VERSION" '.version = $v' src/data/brand-version.json > temp.json && mv temp.json src/data/brand-version.json
 
       - name: Create Pull Request

@@ -23,7 +23,7 @@ export const THEME_COLORS = {
  * NOTE: If replacing the image, update width/height to match the actual dimensions.
  */
 export const DEFAULT_OG_IMAGE = {
-  path: '/brand/og-default.png',
+  path: '/brand/bitcraft-og.png',
   width: 1200,
   height: 630,
 } as const;
