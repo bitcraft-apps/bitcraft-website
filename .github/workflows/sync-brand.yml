@@ -22,6 +22,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.BRAND_REPO_READ_TOKEN }}
         run: |
+          set -euo pipefail
+
           # 1. Get Local Version
           LOCAL_VERSION=$(jq -r .version src/data/brand-version.json)
           echo "Current local version: $LOCAL_VERSION"
@@ -53,6 +55,11 @@ jobs:
           GH_TOKEN: ${{ secrets.BRAND_REPO_READ_TOKEN }}
           VERSION: ${{ steps.check.outputs.version }}
         run: |
+          set -euo pipefail
+
+          # Ensure cleanup on exit (success or failure)
+          trap 'rm -rf temp-download temp-unzip temp-logo-backup' EXIT
+
           echo "Downloading assets for version $VERSION..."
 
           # Download the bundle zip from the release
@@ -147,10 +154,8 @@ jobs:
              fi
           fi
 
-          # Clean up temp directories
-          rm -rf temp-download temp-unzip temp-logo-backup
-
           # Update the local version file (atomic via temp file)
+          # Note: temp directories cleaned up by EXIT trap
           TEMP_FILE=$(mktemp)
           jq --arg v "$VERSION" '.version = $v' src/data/brand-version.json > "$TEMP_FILE" && mv "$TEMP_FILE" src/data/brand-version.json
 
