@@ -6,6 +6,10 @@ on:
     - cron: '0 8 * * *'
   workflow_dispatch:
 
+concurrency:
+  group: sync-brand
+  cancel-in-progress: false
+
 jobs:
   check-and-sync:
     runs-on: ubuntu-latest
@@ -23,6 +27,8 @@ jobs:
           GH_TOKEN: ${{ secrets.BRAND_REPO_READ_TOKEN }}
         run: |
           set -euo pipefail
+
+          # Dependencies: jq (pre-installed on ubuntu-latest runners)
 
           # 1. Get Local Version
           LOCAL_VERSION=$(jq -r .version src/data/brand-version.json)
@@ -58,7 +64,9 @@ jobs:
           set -euo pipefail
 
           # Ensure cleanup on exit (success or failure)
-          trap 'rm -rf temp-download temp-unzip temp-logo-backup' EXIT
+          # TEMP_VERSION_FILE is set later; declared here so trap can reference it
+          TEMP_VERSION_FILE=""
+          trap 'rm -rf temp-download temp-unzip temp-logo-backup "$TEMP_VERSION_FILE"' EXIT
 
           echo "Downloading assets for version $VERSION..."
 
@@ -74,12 +82,12 @@ jobs:
           ZIP_FILES=(temp-download/*.zip)
           shopt -u nullglob
 
-          if [ ${#ZIP_FILES[@]} -eq 0 ]; then
+          if [ "${#ZIP_FILES[@]}" -eq 0 ]; then
             echo "Error: No zip file found in temp-download/"
             exit 1
           fi
 
-          if [ ${#ZIP_FILES[@]} -gt 1 ]; then
+          if [ "${#ZIP_FILES[@]}" -gt 1 ]; then
             echo "Error: Multiple zip files found: ${ZIP_FILES[*]}"
             exit 1
           fi
@@ -127,7 +135,7 @@ jobs:
              BUNDLE_LOGOS=("$STAGING"/brand/bitcraft-logo*.svg)
              shopt -u nullglob
 
-             if [ ${#LOCAL_LOGOS[@]} -gt 0 ] && [ ${#BUNDLE_LOGOS[@]} -eq 0 ]; then
+             if [ "${#LOCAL_LOGOS[@]}" -gt 0 ] && [ "${#BUNDLE_LOGOS[@]}" -eq 0 ]; then
                 mkdir -p temp-logo-backup
                 mv "${LOCAL_LOGOS[@]}" temp-logo-backup/
              fi
@@ -147,7 +155,7 @@ jobs:
              BRAND_FILES=("$STAGING/brand/"*)
              shopt -u nullglob
 
-             if [ ${#BRAND_FILES[@]} -gt 0 ]; then
+             if [ "${#BRAND_FILES[@]}" -gt 0 ]; then
                 cp -R "${BRAND_FILES[@]}" public/brand/
              else
                 echo "Warning: No files found in $STAGING/brand/"
@@ -158,20 +166,18 @@ jobs:
                 shopt -s nullglob
                 BACKUP_LOGOS=(temp-logo-backup/*.svg)
                 shopt -u nullglob
-                if [ ${#BACKUP_LOGOS[@]} -gt 0 ]; then
+                if [ "${#BACKUP_LOGOS[@]}" -gt 0 ]; then
                    mv "${BACKUP_LOGOS[@]}" public/brand/
                 fi
                 if [ -f "temp-logo-backup/README.md" ]; then
                    mv "temp-logo-backup/README.md" public/brand/
                 fi
-                rm -rf temp-logo-backup
              fi
           fi
 
           # Update the local version file (atomic via temp file)
-          # Note: temp directories cleaned up by EXIT trap
-          TEMP_FILE=$(mktemp)
-          jq --arg v "$VERSION" '.version = $v' src/data/brand-version.json > "$TEMP_FILE" && mv "$TEMP_FILE" src/data/brand-version.json
+          TEMP_VERSION_FILE=$(mktemp)
+          jq --arg v "$VERSION" '.version = $v' src/data/brand-version.json > "$TEMP_VERSION_FILE" && mv "$TEMP_VERSION_FILE" src/data/brand-version.json
 
       - name: Create Pull Request
         if: steps.check.outputs.update_needed == 'true'
