@@ -61,8 +61,22 @@ jobs:
             --pattern "*brand-bundle*.zip" \
             --dir temp-download
 
-          # Find the downloaded zip file
-          ZIP_FILE=$(ls temp-download/*.zip)
+          # Find the downloaded zip file (with validation)
+          shopt -s nullglob
+          ZIP_FILES=(temp-download/*.zip)
+          shopt -u nullglob
+
+          if [ ${#ZIP_FILES[@]} -eq 0 ]; then
+            echo "Error: No zip file found in temp-download/"
+            exit 1
+          fi
+
+          if [ ${#ZIP_FILES[@]} -gt 1 ]; then
+            echo "Error: Multiple zip files found: ${ZIP_FILES[*]}"
+            exit 1
+          fi
+
+          ZIP_FILE="${ZIP_FILES[0]}"
           echo "Downloaded: $ZIP_FILE"
 
           # Prepare destination
