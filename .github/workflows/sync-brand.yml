@@ -41,8 +41,8 @@ jobs:
           REMOTE_VERSION=$(gh release view --repo bitcraft-apps/bitcraft-brand --json tagName -q .tagName)
           echo "Latest remote version: $REMOTE_VERSION"
 
-          # 3. Compare
-          # Normalize versions by removing leading 'v' if present
+          # 3. Compare versions
+          # Normalize by removing leading 'v' if present
           LOCAL_CLEAN=${LOCAL_VERSION#v}
           REMOTE_CLEAN=${REMOTE_VERSION#v}
 
@@ -52,9 +52,17 @@ jobs:
             echo "Versions match. No update needed."
             echo "update_needed=false" >> $GITHUB_OUTPUT
           else
-            echo "New version found!"
-            echo "update_needed=true" >> $GITHUB_OUTPUT
-            echo "version=$REMOTE_VERSION" >> $GITHUB_OUTPUT
+            # Check for potential downgrade (remote older than local)
+            # Uses sort -V for semantic version comparison
+            OLDER=$(printf '%s\n%s' "$LOCAL_CLEAN" "$REMOTE_CLEAN" | sort -V | head -n1)
+            if [ "$OLDER" == "$REMOTE_CLEAN" ] && [ "$OLDER" != "$LOCAL_CLEAN" ]; then
+              echo "::warning::Remote version ($REMOTE_CLEAN) is older than local ($LOCAL_CLEAN). This may indicate a reverted release. Skipping sync."
+              echo "update_needed=false" >> $GITHUB_OUTPUT
+            else
+              echo "New version found!"
+              echo "update_needed=true" >> $GITHUB_OUTPUT
+              echo "version=$REMOTE_VERSION" >> $GITHUB_OUTPUT
+            fi
           fi
 
       - name: Download & Update Assets
@@ -101,11 +109,15 @@ jobs:
 
           # Unzip to a staging directory (avoid copying to repo root for security)
           unzip -o "$ZIP_FILE" -d temp-unzip
-          STAGING="temp-unzip/bundle"
+
+          # Expected top-level directory in the bundle archive
+          BUNDLE_DIR="bundle"
+          STAGING="temp-unzip/$BUNDLE_DIR"
 
           # Validate expected bundle structure exists
           if [ ! -d "$STAGING" ]; then
-            echo "Error: Expected 'bundle/' directory not found in zip archive"
+            echo "Error: Expected '$BUNDLE_DIR/' directory not found in zip archive"
+            echo "Has the bundle structure changed? Check bitcraft-brand releases."
             echo "Archive contents:"
             ls -la temp-unzip/
             exit 1
@@ -138,14 +150,20 @@ jobs:
                 mv -f "$STAGING/brand/tokens.css" src/styles/
              fi
 
-             # Preserve local logo SVGs if bundle doesn't provide them
+             # Check logo status and log what will happen
              # (logos are manually managed until upstream bitcraft-brand#32 is resolved)
              shopt -s nullglob
              LOCAL_LOGOS=(public/brand/bitcraft-logo*.svg)
              BUNDLE_LOGOS=("$STAGING"/brand/bitcraft-logo*.svg)
              shopt -u nullglob
 
-             if [ "${#LOCAL_LOGOS[@]}" -gt 0 ] && [ "${#BUNDLE_LOGOS[@]}" -eq 0 ]; then
+             if [ "${#BUNDLE_LOGOS[@]}" -gt 0 ]; then
+                echo "Bundle provides logos: ${BUNDLE_LOGOS[*]}"
+                if [ "${#LOCAL_LOGOS[@]}" -gt 0 ]; then
+                   echo "::notice::Local logos will be replaced by bundle logos. Review the PR to verify logo changes are intentional."
+                fi
+             elif [ "${#LOCAL_LOGOS[@]}" -gt 0 ]; then
+                echo "Bundle does not include logos. Preserving local logos: ${LOCAL_LOGOS[*]}"
                 mkdir -p temp-logo-backup
                 mv "${LOCAL_LOGOS[@]}" temp-logo-backup/
              fi
