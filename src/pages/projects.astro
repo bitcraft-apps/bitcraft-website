@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectsHero from '../components/ProjectsHero.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { getCollection } from 'astro:content';
 import { FEATURED_TAG } from '../consts';
@@ -11,8 +12,7 @@ const sortedProjects = [...projects].sort(
 ---
 
 <BaseLayout title="Projects | Bitcraft" description="Our portfolio of web experiences and tools.">
-  <h1 class="text-4xl font-bold text-dark-olive dark:text-off-white mb-4">Projects</h1>
-  <p class="text-lg text-near-black dark:text-off-white/80 font-sans mb-8">Our portfolio of web experiences and tools.</p>
+  <ProjectsHero slot="fullWidth" projectCount={sortedProjects.length} />
 
   {
     sortedProjects.length === 0 ? (
