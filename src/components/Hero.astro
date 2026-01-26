@@ -112,6 +112,8 @@ import Button from './Button.astro';
 </section>
 
 <script>
+  import { setupHeroAnimations } from '../scripts/hero-animations';
+
   function initScrollIndicator() {
     const button = document.getElementById('scroll-indicator');
     if (!button || button.dataset.initialized === 'true') return;
@@ -128,34 +130,7 @@ import Button from './Button.astro';
     });
   }
 
-  function initHeroAnimations() {
-    const hero = document.querySelector('[data-hero]');
-    if (!hero || hero.getAttribute('data-animation-observer') === 'true') {
-      return;
-    }
-
-    hero.setAttribute('data-animation-observer', 'true');
-
-    if (!('IntersectionObserver' in window)) {
-      hero.setAttribute('data-animate-active', 'true');
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        hero.setAttribute('data-animate-active', entry?.isIntersecting ? 'true' : 'false');
-      },
-      { threshold: 0.2 }
-    );
-
-    observer.observe(hero);
-  }
-
   initScrollIndicator();
-  initHeroAnimations();
-  document.addEventListener('astro:page-load', () => {
-    initScrollIndicator();
-    initHeroAnimations();
-  });
+  setupHeroAnimations();
+  document.addEventListener('astro:page-load', initScrollIndicator);
 </script>

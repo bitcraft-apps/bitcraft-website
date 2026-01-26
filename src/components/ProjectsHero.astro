@@ -84,30 +84,6 @@ const { projectCount } = Astro.props;
 </section>
 
 <script>
-  function initHeroAnimations() {
-    const hero = document.querySelector('[data-hero]');
-    if (!hero || hero.getAttribute('data-animation-observer') === 'true') {
-      return;
-    }
-
-    hero.setAttribute('data-animation-observer', 'true');
-
-    if (!('IntersectionObserver' in window)) {
-      hero.setAttribute('data-animate-active', 'true');
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        hero.setAttribute('data-animate-active', entry?.isIntersecting ? 'true' : 'false');
-      },
-      { threshold: 0.2 }
-    );
-
-    observer.observe(hero);
-  }
-
-  initHeroAnimations();
-  document.addEventListener('astro:page-load', initHeroAnimations);
+  import { setupHeroAnimations } from '../scripts/hero-animations';
+  setupHeroAnimations();
 </script>
