@@ -9,18 +9,23 @@
 /** Shared observer instance to avoid creating one per hero */
 let sharedObserver: IntersectionObserver | null = null;
 
-/** Track if page-load listener has been registered */
-let listenerRegistered = false;
+/** Track if event listeners have been registered */
+let listenersRegistered = false;
+
+/** Debounce multiple setupHeroAnimations calls within the same tick */
+let initScheduled = false;
 
 function getSharedObserver(): IntersectionObserver {
   if (!sharedObserver) {
     sharedObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          (entry.target as HTMLElement).setAttribute(
-            'data-animate-active',
-            entry.isIntersecting ? 'true' : 'false',
-          );
+          if (entry.target instanceof HTMLElement) {
+            entry.target.setAttribute(
+              'data-animate-active',
+              entry.isIntersecting ? 'true' : 'false',
+            );
+          }
         });
       },
       { threshold: 0.2 },
@@ -29,11 +34,21 @@ function getSharedObserver(): IntersectionObserver {
   return sharedObserver;
 }
 
+/** Clean up observer before page swap to prevent memory leaks */
+function cleanupObserver(): void {
+  if (sharedObserver) {
+    sharedObserver.disconnect();
+    sharedObserver = null;
+  }
+}
+
 export function initHeroAnimations(): void {
   // Find all heroes that haven't been initialized yet
   const heroes = document.querySelectorAll<HTMLElement>(
     '[data-hero]:not([data-animation-observer="true"])',
   );
+
+  if (heroes.length === 0) return;
 
   if (!('IntersectionObserver' in window)) {
     heroes.forEach((hero) => {
@@ -52,10 +67,18 @@ export function initHeroAnimations(): void {
 }
 
 export function setupHeroAnimations(): void {
-  initHeroAnimations();
+  // Debounce multiple calls within the same tick (e.g., when multiple hero components load)
+  if (!initScheduled) {
+    initScheduled = true;
+    queueMicrotask(() => {
+      initScheduled = false;
+      initHeroAnimations();
+    });
+  }
 
-  if (!listenerRegistered) {
+  if (!listenersRegistered) {
     document.addEventListener('astro:page-load', initHeroAnimations);
-    listenerRegistered = true;
+    document.addEventListener('astro:before-swap', cleanupObserver);
+    listenersRegistered = true;
   }
 }
