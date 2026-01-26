@@ -6,7 +6,7 @@
 import Icon from './Icon.astro';
 
 interface Props {
-  projectCount?: number;
+  projectCount: number;
 }
 
 const { projectCount } = Astro.props;
@@ -63,9 +63,9 @@ const { projectCount } = Astro.props;
   <!-- Main content -->
   <div class="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Project count badge (hidden when no projects) -->
-    {projectCount !== undefined && projectCount > 0 && (
+    {projectCount > 0 && (
       <div class="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-forest-green/10 border border-forest-green/20 rounded-full text-forest-green text-sm font-medium">
-        <span class="w-2 h-2 bg-forest-green rounded-full" />
+        <span class="w-2 h-2 bg-forest-green rounded-full animate-pulse" />
         {projectCount} {projectCount === 1 ? 'Project' : 'Projects'}
       </div>
     )}
