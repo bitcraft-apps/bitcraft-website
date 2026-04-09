@@ -9,6 +9,7 @@ const projects = defineCollection({
     pubDate: z.coerce.date(),
     repository: z.string().url().optional(),
     image: z.string().min(1).optional(),
+    logo: z.string().min(1).optional(),
     tags: z.array(z.string()).optional(),
     status: z.enum(['released', 'in-progress']).default('released'),
     type: z.enum(['own', 'client']).default('own'),

@@ -15,7 +15,7 @@ interface Props {
 }
 
 const { project, featured = false, priority = false } = Astro.props;
-const { title, description, pubDate, repository, image, tags, status, type } = project.data;
+const { title, description, pubDate, repository, image, logo, tags, status, type } = project.data;
 
 const formattedDate = formatDate(pubDate);
 
@@ -26,7 +26,19 @@ const displayTags = getDisplayTags(tags);
   class="group relative bg-white dark:bg-near-black rounded-xl border border-olive-drab/10 dark:border-olive-drab/20 overflow-hidden shadow-sm hover:shadow-lg hover:shadow-forest-green/10 hover:border-forest-green/20 dark:hover:border-forest-green/40 transform hover:-translate-y-1 transition-all duration-300"
 >
   {
-    image ? (
+    logo ? (
+      <a href={`/projects/${project.id}`} class="block">
+        <div class="w-full h-52 bg-gradient-to-br from-off-white via-white to-off-white dark:from-near-black/80 dark:via-near-black dark:to-near-black/80 flex items-center justify-center">
+          <img
+            src={logo}
+            alt={`${title} logo`}
+            class="w-20 h-20 object-contain"
+            loading={priority ? 'eager' : 'lazy'}
+            decoding="async"
+          />
+        </div>
+      </a>
+    ) : image ? (
       <a href={`/projects/${project.id}`} class="block overflow-hidden">
         <img
           src={image}

@@ -2,7 +2,8 @@
 title: Text, Inc. / LiveChat, Inc.
 description: 8+ years building AI-powered customer service products — from LiveChat to Text, serving 35,000+ brands worldwide.
 pubDate: 2018-01-01
-image: /images/projects/text-hero.png
+image: /images/projects/text-hero.webp
+logo: /images/projects/text-logo.svg
 tags:
   - featured
   - Client
