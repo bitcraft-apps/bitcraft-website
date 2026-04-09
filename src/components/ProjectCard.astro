@@ -25,6 +25,7 @@ const displayTags = getDisplayTags(tags);
 <article
   class="group relative bg-white dark:bg-near-black rounded-xl border border-olive-drab/10 dark:border-olive-drab/20 overflow-hidden shadow-sm hover:shadow-lg hover:shadow-forest-green/10 hover:border-forest-green/20 dark:hover:border-forest-green/40 transform hover:-translate-y-1 transition-all duration-300"
 >
+  {/* Visual precedence: logo → image → gradient fallback */}
   {
     logo ? (
       <a href={`/projects/${project.id}`} class="block">
