@@ -11,7 +11,7 @@ const projects = defineCollection({
     image: z.string().min(1).optional(),
     logo: z.string().min(1).optional(),
     tags: z.array(z.string()).optional(),
-    status: z.enum(['released', 'in-progress']).default('released'),
+    status: z.enum(['development', 'active', 'maintained', 'completed', 'archived']),
     type: z.enum(['own', 'client']).default('own'),
   }),
 });

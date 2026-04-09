@@ -5,7 +5,7 @@
  */
 import type { CollectionEntry } from 'astro:content';
 import Icon from './Icon.astro';
-import { formatDate, getDisplayTags } from '../consts';
+import { formatDate, getDisplayTags, STATUS_LABELS } from '../consts';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -62,9 +62,9 @@ const displayTags = getDisplayTags(tags);
   }
 
   <div class="p-6">
-    {/* Status badges */}
+    {/* Status badges — hide entire row for completed non-featured own projects (badge adds no value on cards) */}
     {
-      (featured || status === 'in-progress' || type === 'client') && (
+      (featured || type === 'client' || status !== 'completed') && (
         <div class="flex flex-wrap gap-2 mb-3">
           {featured && (
             <div class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-forest-green/10 text-forest-green text-xs font-medium rounded-full">
@@ -78,10 +78,10 @@ const displayTags = getDisplayTags(tags);
               Client Project
             </div>
           )}
-          {status === 'in-progress' && (
+          {STATUS_LABELS[status] && (
             <div class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-olive-drab/10 text-olive-drab text-xs font-medium rounded-full">
-              <Icon name="clock" size="2xs" />
-              In Progress
+              <Icon name={STATUS_LABELS[status].icon} size="2xs" />
+              {STATUS_LABELS[status].label}
             </div>
           )}
         </div>

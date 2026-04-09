@@ -83,6 +83,29 @@ export const formatDate = (date: Date): string =>
     timeZone: 'UTC',
   });
 
+/** User-facing labels for project status badges */
+export const STATUS_LABELS = {
+  development: { label: 'In Development', icon: 'clock' },
+  active: { label: 'Active', icon: 'sparkles' },
+  maintained: { label: 'Maintained', icon: 'sparkles' },
+  completed: { label: 'Completed', icon: 'folder' },
+  archived: { label: 'Archived', icon: 'folder' },
+} as const satisfies Record<string, { label: string; icon: string }>;
+
+/**
+ * Sort projects: featured first, then by pubDate descending.
+ * Featured projects are those with the 'featured' tag.
+ */
+export const sortProjects = <T extends { data: { tags?: string[]; pubDate: Date } }>(
+  projects: T[],
+): T[] =>
+  [...projects].sort((a, b) => {
+    const aFeatured = a.data.tags?.includes(FEATURED_TAG) ? 1 : 0;
+    const bFeatured = b.data.tags?.includes(FEATURED_TAG) ? 1 : 0;
+    if (aFeatured !== bFeatured) return bFeatured - aFeatured;
+    return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+  });
+
 export interface NavItem {
   href: string;
   label: string;

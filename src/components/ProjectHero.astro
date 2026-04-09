@@ -5,14 +5,14 @@
  */
 import Icon from './Icon.astro';
 import Button from './Button.astro';
-import { formatDate, getDisplayTags } from '../consts';
+import { formatDate, getDisplayTags, STATUS_LABELS } from '../consts';
 
 interface Props {
   title: string;
   description: string;
   image?: string;
   logo?: string;
-  status: 'released' | 'in-progress';
+  status: 'development' | 'active' | 'maintained' | 'completed' | 'archived';
   type?: 'own' | 'client';
   pubDate: Date;
   repository?: string;
@@ -55,7 +55,7 @@ const displayTags = getDisplayTags(tags);
 
     {/* Logo + badges row */}
     {
-      (logo || status === 'in-progress' || type === 'client') && (
+      (logo || type === 'client' || STATUS_LABELS[status]) && (
         <div class="flex items-center gap-3 mb-4">
           {logo && (
             <img
@@ -71,10 +71,10 @@ const displayTags = getDisplayTags(tags);
               Client Project
             </span>
           )}
-          {status === 'in-progress' && (
+          {STATUS_LABELS[status] && (
             <span class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full bg-olive-drab/10 text-olive-drab">
-              <Icon name="clock" size="2xs" />
-              In Progress
+              <Icon name={STATUS_LABELS[status].icon} size="2xs" />
+              {STATUS_LABELS[status].label}
             </span>
           )}
         </div>
