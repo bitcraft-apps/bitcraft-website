@@ -84,13 +84,13 @@ export const formatDate = (date: Date): string =>
   });
 
 /** User-facing labels for project status badges */
-export const STATUS_LABELS: Record<string, { label: string; icon: string }> = {
+export const STATUS_LABELS = {
   development: { label: 'In Development', icon: 'clock' },
   active: { label: 'Active', icon: 'sparkles' },
   maintained: { label: 'Maintained', icon: 'sparkles' },
   completed: { label: 'Completed', icon: 'folder' },
   archived: { label: 'Archived', icon: 'folder' },
-};
+} as const satisfies Record<string, { label: string; icon: string }>;
 
 /**
  * Sort projects: featured first, then by pubDate descending.

@@ -12,7 +12,7 @@ interface Props {
   description: string;
   image?: string;
   logo?: string;
-  status: string;
+  status: 'development' | 'active' | 'maintained' | 'completed' | 'archived';
   type?: 'own' | 'client';
   pubDate: Date;
   repository?: string;

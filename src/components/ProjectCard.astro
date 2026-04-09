@@ -62,7 +62,7 @@ const displayTags = getDisplayTags(tags);
   }
 
   <div class="p-6">
-    {/* Status badges */}
+    {/* Status badges — hide entire row for completed non-featured own projects (badge adds no value on cards) */}
     {
       (featured || type === 'client' || status !== 'completed') && (
         <div class="flex flex-wrap gap-2 mb-3">
