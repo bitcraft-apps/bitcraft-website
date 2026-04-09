@@ -3,6 +3,8 @@ title: Klassroom
 description: Generates HTML presentations for Polish parent-teacher meetings from school grade XLSX exports.
 pubDate: 2026-01-16
 repository: https://github.com/bitcraft-apps/klassroom
+image: /images/projects/klassroom-hero.webp
+logo: /images/projects/klassroom-logo.svg
 tags:
   - TypeScript
   - Education
