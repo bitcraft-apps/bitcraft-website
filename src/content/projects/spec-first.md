@@ -1,22 +1,22 @@
 ---
-title: Claude Spec-First Framework
-description: Minimalist development workflow for Claude Code following YAGNI, KISS, and SRP principles. Build the smallest thing that works.
+title: Spec First
+description: Build faster by writing requirements before code. A Claude Code plugin for spec-driven development.
 pubDate: 2025-09-24
-repository: https://github.com/bitcraft-apps/claude-spec-first
+repository: https://github.com/bitcraft-apps/spec-first
 tags:
   - featured
-  - Claude
+  - Claude Code
   - Developer Tools
   - Workflow
 status: released
 ---
 
-A lightweight framework that provides 12 specialized micro-agents and 3 workflow commands for specification-driven development with Claude Code.
+A Claude Code plugin that enforces a three-step workflow: define what to build, implement it from the spec, and generate documentation — all from your terminal.
 
 ## Features
 
-- **3-Phase Workflow**: `/csf:spec`, `/csf:implement`, `/csf:document`
-- **12 Micro-Agents**: Specialized agents for specification, implementation, and documentation
+- **3-Phase Workflow**: `/sf:spec`, `/sf:implement`, `/sf:document`
+- **Specialized Agents**: Parallel micro-agents for specification, implementation, and documentation
 - **Technology Agnostic**: Works with any project type
 - **Self-Documenting**: Generates technical and user documentation automatically
 
@@ -29,14 +29,14 @@ A lightweight framework that provides 12 specialized micro-agents and 3 workflow
 
 ## Workflow Commands
 
-### `/csf:spec [REQUIREMENTS]`
+### `/sf:spec [REQUIREMENTS]`
 
 Create specifications through parallel analysis. Define what to build and why.
 
-### `/csf:implement [SPECIFICATION_OR_PATH]`
+### `/sf:implement [SPECIFICATION_OR_PATH]`
 
 Implement through pattern learning. Build the minimal working solution.
 
-### `/csf:document [SPEC_PATH] [IMPLEMENTATION_PATH]`
+### `/sf:document [SPEC_PATH] [IMPLEMENTATION_PATH]`
 
 Document through comprehensive analysis. Generate technical and user documentation.
