@@ -83,6 +83,15 @@ export const formatDate = (date: Date): string =>
     timeZone: 'UTC',
   });
 
+/** User-facing labels for project status badges */
+export const STATUS_LABELS: Record<string, { label: string; icon: string }> = {
+  development: { label: 'In Development', icon: 'clock' },
+  active: { label: 'Active', icon: 'sparkles' },
+  maintained: { label: 'Maintained', icon: 'sparkles' },
+  completed: { label: 'Completed', icon: 'folder' },
+  archived: { label: 'Archived', icon: 'folder' },
+};
+
 export interface NavItem {
   href: string;
   label: string;
