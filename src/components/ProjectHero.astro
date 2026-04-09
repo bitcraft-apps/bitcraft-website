@@ -12,12 +12,13 @@ interface Props {
   description: string;
   image?: string;
   status: 'released' | 'in-progress';
+  type?: 'own' | 'client';
   pubDate: Date;
   repository?: string;
   tags?: string[];
 }
 
-const { title, description, image, status, pubDate, repository, tags } = Astro.props;
+const { title, description, image, status, type, pubDate, repository, tags } = Astro.props;
 
 const formattedDate = formatDate(pubDate);
 
@@ -72,21 +73,36 @@ const displayTags = getDisplayTags(tags);
       Back to Projects
     </a>
 
-    {/* Status badge */}
+    {/* Status badges */}
     {
-      status === 'in-progress' && (
-        <div class="mb-4">
-          <span
-            class:list={[
-              'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full',
-              image
-                ? 'bg-white/20 text-white backdrop-blur-sm'
-                : 'bg-olive-drab/10 text-olive-drab',
-            ]}
-          >
-            <Icon name="clock" size="2xs" />
-            In Progress
-          </span>
+      (status === 'in-progress' || type === 'client') && (
+        <div class="flex flex-wrap gap-2 mb-4">
+          {type === 'client' && (
+            <span
+              class:list={[
+                'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full',
+                image
+                  ? 'bg-white/20 text-white backdrop-blur-sm'
+                  : 'bg-sky-500/10 text-sky-600 dark:text-sky-400',
+              ]}
+            >
+              <Icon name="briefcase" size="2xs" />
+              Client Project
+            </span>
+          )}
+          {status === 'in-progress' && (
+            <span
+              class:list={[
+                'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full',
+                image
+                  ? 'bg-white/20 text-white backdrop-blur-sm'
+                  : 'bg-olive-drab/10 text-olive-drab',
+              ]}
+            >
+              <Icon name="clock" size="2xs" />
+              In Progress
+            </span>
+          )}
         </div>
       )
     }
