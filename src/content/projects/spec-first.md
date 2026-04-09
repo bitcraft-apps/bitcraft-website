@@ -3,6 +3,8 @@ title: Spec First
 description: Build faster by writing requirements before code. A Claude Code plugin for spec-driven development.
 pubDate: 2025-09-24
 repository: https://github.com/bitcraft-apps/spec-first
+image: /images/projects/spec-first-hero.webp
+logo: /images/projects/spec-first-logo.svg
 tags:
   - featured
   - Claude Code
