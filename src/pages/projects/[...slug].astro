@@ -3,12 +3,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectHero from '../../components/ProjectHero.astro';
 import ProjectNavigation from '../../components/ProjectNavigation.astro';
 import { getCollection, render } from 'astro:content';
+import { sortProjects } from '../../consts';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
-  const sorted = [...projects].sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-  );
+  const sorted = sortProjects(projects);
 
   return sorted.map((project, index) => ({
     params: { slug: project.id },

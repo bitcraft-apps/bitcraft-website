@@ -92,6 +92,20 @@ export const STATUS_LABELS: Record<string, { label: string; icon: string }> = {
   archived: { label: 'Archived', icon: 'folder' },
 };
 
+/**
+ * Sort projects: featured first, then by pubDate descending.
+ * Featured projects are those with the 'featured' tag.
+ */
+export const sortProjects = <T extends { data: { tags?: string[]; pubDate: Date } }>(
+  projects: T[],
+): T[] =>
+  [...projects].sort((a, b) => {
+    const aFeatured = a.data.tags?.includes(FEATURED_TAG) ? 1 : 0;
+    const bFeatured = b.data.tags?.includes(FEATURED_TAG) ? 1 : 0;
+    if (aFeatured !== bFeatured) return bFeatured - aFeatured;
+    return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+  });
+
 export interface NavItem {
   href: string;
   label: string;
