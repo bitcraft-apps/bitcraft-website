@@ -8,7 +8,7 @@ tags:
   - Claude Code
   - Developer Tools
   - Workflow
-status: released
+status: maintained
 ---
 
 A Claude Code plugin that enforces a three-step workflow: define what to build, implement it from the spec, and generate documentation — all from your terminal.

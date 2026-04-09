@@ -8,7 +8,7 @@ tags:
   - iOS
   - macOS
   - Document Management
-status: in-progress
+status: development
 ---
 
 A native Apple platform application focused on organizing important personal documents—warranties, contracts, receipts, insurance policies—with smart date recognition.

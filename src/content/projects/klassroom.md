@@ -7,7 +7,7 @@ tags:
   - TypeScript
   - Education
   - Data Processing
-status: in-progress
+status: development
 ---
 
 A specialized tool for teachers that transforms school grade spreadsheets into professional presentation materials for parent-teacher conferences.
