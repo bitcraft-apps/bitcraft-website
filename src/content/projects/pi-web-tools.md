@@ -1,13 +1,13 @@
 ---
 title: pi-web-tools
 description: Shell-only web search and fetch tools for the pi coding agent. Zero API keys, zero accounts.
-pubDate: 2026-05-06
+pubDate: 2026-05-10
 repository: https://github.com/bitcraft-apps/pi-web-tools
 image: /images/projects/pi-web-tools-hero.webp
 logo: /images/projects/pi-web-tools-logo.svg
 tags:
   - featured
-  - pi
+  - Pi
   - Developer Tools
   - CLI
 status: maintained
@@ -66,5 +66,5 @@ You don't call these tools directly — pi's agent picks them up when it needs w
 ## Limitations
 
 - **JS-heavy SPAs** return empty markdown. Workarounds: `old.reddit.com`, `*.json` API endpoints, RSS/Atom feeds.
-- **DuckDuckGo rate limits** (~10 req/min/IP). If `websearch` 429s, wait or use `webfetch` against a known URL.
+- **DuckDuckGo rate limits** are low and unspecified. If `websearch` 429s, wait or use `webfetch` against a known URL.
 - **PDFs, images, audio, video** are not fetchable — text/HTML only.
