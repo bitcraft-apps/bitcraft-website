@@ -136,7 +136,7 @@ export const FOUNDER = {
 
 // Contact information
 export const CONTACT = {
-  email: 'szymon@graczyk.dev',
+  email: 'szymon@bitcraftapps.dev',
   github: 'https://github.com/bitcraft-apps',
 } as const;
 
