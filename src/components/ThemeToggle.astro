@@ -12,7 +12,7 @@ import { THEME_COLORS } from '../consts';
 <button
   id="theme-toggle"
   type="button"
-  class="p-2 rounded-md text-near-black dark:text-off-white hover:text-dark-olive dark:hover:text-white hover:bg-off-white dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-dark-olive dark:focus:ring-off-white transition-colors duration-200"
+  class="p-2 rounded-md cursor-pointer text-near-black dark:text-off-white hover:text-dark-olive dark:hover:text-white hover:bg-off-white dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-dark-olive dark:focus:ring-off-white transition-colors duration-200"
   aria-label="Switch to dark mode"
   data-theme-light={THEME_COLORS.light}
   data-theme-dark={THEME_COLORS.dark}
@@ -98,6 +98,9 @@ import { THEME_COLORS } from '../consts';
     }, { signal: controller.signal });
   }
 
-  // Use astro:page-load which fires on initial load and View Transitions navigation
-  document.addEventListener('astro:page-load', initThemeToggle);
+  // BaseLayout doesn't include <ClientRouter />, so a single init on load is
+  // sufficient. If View Transitions are added later, also wire up:
+  //   document.addEventListener('astro:page-load', initThemeToggle);
+  // initThemeToggle() aborts the prior controller, so re-running is safe.
+  initThemeToggle();
 </script>
