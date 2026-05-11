@@ -1,0 +1,15 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="80" height="80" rx="16" fill="#0d1117"/>
+  <!-- Terminal window chrome dots -->
+  <circle cx="16" cy="20" r="2" fill="#ff5f56"/>
+  <circle cx="23" cy="20" r="2" fill="#ffbd2e"/>
+  <circle cx="30" cy="20" r="2" fill="#27c93f"/>
+  <!-- Prompt arrow -->
+  <path d="M16 36l6 5-6 5" fill="none" stroke="#7ee787" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Globe / web -->
+  <circle cx="52" cy="52" r="14" fill="none" stroke="#79c0ff" stroke-width="2.5"/>
+  <ellipse cx="52" cy="52" rx="6" ry="14" fill="none" stroke="#79c0ff" stroke-width="2"/>
+  <line x1="38" y1="52" x2="66" y2="52" stroke="#79c0ff" stroke-width="2"/>
+  <!-- Command line under prompt -->
+  <rect x="26" y="40" width="14" height="2" rx="1" fill="#7ee787" opacity="0.85"/>
+</svg>
