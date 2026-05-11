@@ -98,6 +98,11 @@ import { THEME_COLORS } from '../consts';
     }, { signal: controller.signal });
   }
 
-  // Use astro:page-load which fires on initial load and View Transitions navigation
+  // Run immediately on initial load (BaseLayout doesn't include <ClientRouter />,
+  // so astro:page-load won't fire on first paint). The astro:page-load listener
+  // is kept so the toggle re-initializes correctly if View Transitions are
+  // enabled later — initThemeToggle aborts the prior controller, so re-running
+  // is safe.
+  initThemeToggle();
   document.addEventListener('astro:page-load', initThemeToggle);
 </script>
